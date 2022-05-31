@@ -1,3 +1,21 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "eslint:recommended"
+  ],
+  "overrides": [
+    {
+      "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)"],
+      "rules": {
+        "storybook/hierarchy-separator": "error"
+      }
+    }
+  ],
+  "globals": {
+    "React": "readonly"
+  },
+  "rules": {
+    "no-unused-vars": [0, { "args": "after-used", "argsIgnorePattern": "^_" }]
+  }
 }
