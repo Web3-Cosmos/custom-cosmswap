@@ -1,0 +1,25 @@
+:root {
+  --primary: #ffb300;
+  --bg-stack-1: #fdfbf5;
+  --bg-stack-2: #f9f4e7;
+  --bg-stack-3: #f1eada;
+  --bg-stack-4: #eadfc7;
+  --text-primary: #4d4040;
+  --text-secondary: #7a7a7a;
+  --text-tertiary: #fafafa;
+  --text-disabled: #424242;
+  --bg-gradient: radial-gradient(50% 50% at 50% 50%,rgba(40,145,249,.1) 0,rgba(255,255,255,0) 100%);
+}
+
+:root.dark {
+  --primary: #ffb300;
+  --bg-stack-1: #0b0b0b;
+  --bg-stack-2: #212121;
+  --bg-stack-3: #383838;
+  --bg-stack-4: #424242;
+  --text-primary: #ffffff;
+  --text-secondary: #7a7a7a;
+  --text-tertiary: #fafafa;
+  --text-disabled: #f1eada;
+  --bg-gradient: radial-gradient(50% 50% at 50% 50%,rgba(40,145,249,.1) 0,rgba(255,255,255,0) 100%);
+}
