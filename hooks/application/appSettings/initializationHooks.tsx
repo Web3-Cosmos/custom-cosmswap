@@ -6,7 +6,7 @@ import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
 import { useNotification } from '@/hooks/application/notification/useNotification'
 
 import { useDevice } from '@/hooks/general/useDevice'
-import { useIsomorphicLayoutEffect } from '@/hooks/general/useIsomorphicLayoutEffect '
+import { useIsomorphicLayoutEffect } from '@/hooks/general/useIsomorphicLayoutEffect'
 import { useLocalStorageItem } from '@/hooks/general/useLocalStorage'
 import { useRecordedEffect } from '@/hooks/general/useRecordedEffect'
 

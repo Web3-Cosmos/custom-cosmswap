@@ -1,10 +1,10 @@
 import React, { CSSProperties, RefObject, useEffect, useRef, useState } from 'react'
 
-import { shakeUndefindedItem } from '@/functions/arrayMethods'
-import mergeRef from '@/functions/react/mergeRef'
 import { useClick } from '@/hooks/general/useClick'
 
-import { getFileNameOfURI } from '../functions/dom/getFileNameOfURI'
+import { shakeUndefindedItem } from '@/functions/arrayMethods'
+import mergeRef from '@/functions/react/mergeRef'
+import { getFileNameOfURI } from '@/functions/dom/getFileNameOfURI'
 
 /**
  * usually in the leading part of an list-item

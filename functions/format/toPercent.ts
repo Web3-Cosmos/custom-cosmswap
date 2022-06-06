@@ -1,9 +1,6 @@
 import BN from 'bn.js'
 
 import { Numberish } from '@/types/constants'
-import { Percent } from '@raydium-io/raydium-sdk'
-
-import parseNumberInfo from '../numberish/parseNumberInfo'
 
 /**
  * @example
@@ -11,6 +8,11 @@ import parseNumberInfo from '../numberish/parseNumberInfo'
  * toPercent(3.14, { alreadyDecimaled: true }) // => Percent {3.14%}
  */
 export function toPercent(n: Numberish, options?: { /* usually used for backend data */ alreadyDecimaled?: boolean }) {
-  const { numerator, denominator } = parseNumberInfo(n)
-  return new Percent(new BN(numerator), new BN(denominator).mul(options?.alreadyDecimaled ? new BN(100) : new BN(1)))
+  // const { numerator, denominator } = parseNumberInfo(n)
+  // return new Percent(new BN(numerator), new BN(denominator).mul(options?.alreadyDecimaled ? new BN(100) : new BN(1)))
+  if (options?.alreadyDecimaled) {
+    return n
+  } else {
+    return Number(n) * 100
+  }
 }

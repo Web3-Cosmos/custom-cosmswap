@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3007",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -13,6 +13,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.4",
+    "@heroicons/react": "^1.0.6",
     "bn.js": "^5.2.1",
     "next": "12.1.6",
     "nextjs-progressbar": "^0.0.14",

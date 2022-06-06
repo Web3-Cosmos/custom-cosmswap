@@ -1,11 +1,11 @@
 import React from 'react'
 import { Story, ComponentMeta } from '@storybook/react'
 
-import CoinAvatar, { CoinAvatarProps } from '@/components/CoinAvatar'
+import CoinInputBox, { CoinInputBoxProps } from '@/components/CoinInputBox'
 
 export default {
-  title: 'Atom/CoinAvatar',
-  component: CoinAvatar,
+  title: 'Atom/CoinInputBox',
+  component: CoinInputBox,
   argTypes: {
     width: {
       control: { type: 'range', min: 420, max: 1600, step: 50 },
@@ -17,17 +17,18 @@ export default {
       url: 'https://www.figma.com/file/Vy0NbZMTj6yq3b7vBWMezV/Wasted-Talent-rebrand?node-id=846%3A64209',
     },
   },
-} as ComponentMeta<typeof CoinAvatar>
+} as ComponentMeta<typeof CoinInputBox>
 
-const Template: Story<CoinAvatarProps & { width: number }> = (args) => (
-  <div className="w-screen bg-gray-700 h-96">
-    <CoinAvatar {...args} />
+const Template: Story<CoinInputBoxProps & { width: number }> = (args) => (
+  <div className="w-full">
+    <CoinInputBox {...args} />
   </div>
 )
 
 export const Primary = Template.bind({})
 
 Primary.args = {
-  src: "/coins/dollar.svg",
-  onClick: () => null,
+  topLeftLabel: 'Swap:',
+  canSelect: true,
+  haveHalfButton: true,
 }

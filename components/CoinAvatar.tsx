@@ -1,7 +1,7 @@
 import React, { CSSProperties, RefObject } from 'react'
-import { Image } from '@/components'
-
 import { twMerge } from 'tailwind-merge'
+
+import { Image } from '@/components'
 
 export interface CoinAvatarProps {
   haveAnime?: boolean
@@ -47,12 +47,7 @@ export default function CoinAvatar({
       onClick={onClick}
     >
       {!haveAnime ? (
-        <div
-          className={twMerge(`${iconSize} rounded-full overflow-hidden`, className)}
-          style={{
-            background: 'linear-gradient(126.6deg, rgba(171, 196, 255, 0.2) 28.69%, rgba(171, 196, 255, 0) 100%)'
-          }}
-        >
+        <div className={twMerge(`${iconSize} rounded-full overflow-hidden`, className)}>
           <Image
             className={`${iconSize} rounded-full overflow-hidden transition-transform transform ${
               hasOpacity ? 'scale-[.7]' : ''
