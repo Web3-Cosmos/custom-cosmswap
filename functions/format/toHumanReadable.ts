@@ -1,10 +1,9 @@
 import { isArray, isNumberish, isObject, isPrimitive } from '../judgers/dateType'
 import { toString } from '../numberish/toString'
 import { objectMap } from '../objectMethods'
-import toPubString from './toMintString'
 
 /** for debug easier and faster */
-export function toHumanReadable(source: unknown, maxDepth = 10 /** to avoid too deep */) {
+export function toHumanReadable(source: unknown, maxDepth = 10 /** to avoid too deep */): any {
   if (!maxDepth) return source // if no depth left (0 depth), just return
 
   if (isPrimitive(source)) return source
