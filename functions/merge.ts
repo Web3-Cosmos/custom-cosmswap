@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AnyFn, ObjectNotArray } from '@/types/constants'
 
 import { isFunction, isObject, isUndefined } from './judgers/dateType'

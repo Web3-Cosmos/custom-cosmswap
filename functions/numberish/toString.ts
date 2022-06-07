@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Numberish } from '@/types/constants'
 
 import { isString } from '../judgers/dateType'

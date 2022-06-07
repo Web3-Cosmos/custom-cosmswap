@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Numberish } from '@/types/constants'
 import { gt, lt } from './compare'
 

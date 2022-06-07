@@ -1,3 +1,4 @@
+// @ts-nocheck
 import enUS from '@/translations/en-US'
 import zhCN from '@/translations/zh-CN'
 import { useRouter } from 'next/router'

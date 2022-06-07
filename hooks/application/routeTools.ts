@@ -6,7 +6,7 @@ import { objectShakeFalsy } from '@/functions/objectMethods'
 import { shrinkToValue } from '@/functions/shrinkToValue'
 import { HexAddress, MayFunction } from '@/types/constants'
 
-import useAppSettings from '@/hooks/application/appSettings/useAppSettings'
+import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
 import { Token } from '@/hooks/application/token/type'
 
 export type PageRouteConfigs = {
