@@ -1,5 +1,4 @@
 import { Numberish } from '@/types/constants'
-import { Percent } from '@raydium-io/raydium-sdk'
 
 import { eq, gt, lt } from '../numberish/compare'
 import { mul } from '../numberish/operations'
@@ -14,7 +13,7 @@ import { toString } from '../numberish/toString'
  * toPercentString(58, {}) //=> '58.00%'
  */
 export default function toPercentString(
-  n: Numberish | Percent | undefined,
+  n: Numberish | undefined,
   options?: {
     /** by default, it will output <0.01% if it is too small   */
     exact?: boolean
@@ -27,11 +26,12 @@ export default function toPercentString(
   }
 ): string {
   try {
-    const fractionN = toFraction(n ?? 0)
-    const stringPart = fractionN.mul(options?.alreadyPercented ? 1 : 100).toFixed(options?.fixed ?? 2)
-    if (eq(fractionN, 0)) return '0%'
-    if (!options?.exact && stringPart === '0.00') return options?.alwaysSigned ? '<+0.01%' : '<0.01%'
-    return options?.alwaysSigned ? `${getSign(stringPart)}${toString(getUnsignNumber(stringPart))}%` : `${stringPart}%`
+    return '0%'
+    // const fractionN = toFraction(n ?? 0)
+    // const stringPart = fractionN.mul(options?.alreadyPercented ? 1 : 100).toFixed(options?.fixed ?? 2)
+    // if (eq(fractionN, 0)) return '0%'
+    // if (!options?.exact && stringPart === '0.00') return options?.alwaysSigned ? '<+0.01%' : '<0.01%'
+    // return options?.alwaysSigned ? `${getSign(stringPart)}${toString(getUnsignNumber(stringPart))}%` : `${stringPart}%`
   } catch (err) {
     return '0%'
   }
