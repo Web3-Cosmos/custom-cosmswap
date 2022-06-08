@@ -1,9 +1,9 @@
-import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react'
 import { ReactElement } from 'react-markdown/lib/react-markdown'
 
-import { toCamelCase } from '../changeCase'
-import { objectMap, pick } from '../objectMethods'
-import { shrinkToValue } from '../shrinkToValue'
+import { toCamelCase } from '@/functions/changeCase'
+import { objectMap, pick } from '@/functions/objectMethods'
+import { shrinkToValue } from '@/functions/shrinkToValue'
 
 type MayStateFn<T> = T | ((prev: T) => T)
 type StoreTemplate = { [key: string]: any }

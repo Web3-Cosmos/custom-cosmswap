@@ -89,10 +89,10 @@ function solidButtonTailwind({
 }: { size?: 'md' | 'sm' | 'lg' | 'default'; disable?: boolean } = {}) {
   return `${
     size === 'default'
-      ? 'px-4 py-2.5  rounded-xl mobile:rounded-lg'
+      ? 'px-4 py-2.5 rounded-lg'
       : size === 'sm'
-      ? 'px-2.5 py-1.5 text-sm rounded-lg mobile:rounded-md'
-      : 'py-4 px-4 rounded-xl mobile:rounded-lg'
+      ? 'px-2.5 py-1.5 text-sm rounded-lg'
+      : 'py-4 px-4 rounded-lg'
   } whitespace-nowrap appearance-none inline-block font-medium ${
     disable
       ? 'bg-stack-3 text-disabled opacity-50 cursor-not-allowed'
@@ -107,10 +107,10 @@ function outlineButtonTailwind({
 }: { size?: 'md' | 'sm' | 'lg' | 'default'; disable?: boolean } = {}) {
   return `${
     size === 'default'
-      ? 'px-4 py-2.5  rounded-xl mobile:rounded-lg'
+      ? 'px-4 py-2.5 rounded-lg'
       : size === 'sm'
-      ? 'px-2.5 py-1.5 text-sm rounded-lg mobile:rounded-md'
-      : 'py-4 px-4 rounded-xl mobile:rounded-lg'
+      ? 'px-2.5 py-1.5 text-sm rounded-lg'
+      : 'py-4 px-4 rounded-lg'
   } whitespace-nowrap appearance-none inline-block ring-primary ring-1 text-primary font-medium ${
     disable ? 'opacity-30 cursor-not-allowed' : 'clickable clickable-filter-effect'
   }`
@@ -123,10 +123,10 @@ function textButtonTailwind({
 }: { size?: 'md' | 'sm' | 'lg' | 'default'; disable?: boolean } = {}) {
   return `${
     size === 'default'
-      ? 'px-4 py-2.5  rounded-xl mobile:rounded-lg'
+      ? 'px-4 py-2.5 rounded-lg'
       : size === 'sm'
-      ? 'px-2.5 py-1.5 text-sm rounded-lg mobile:rounded-md'
-      : 'py-4 px-4 rounded-xl mobile:rounded-lg'
+      ? 'px-2.5 py-1.5 text-sm rounded-lg'
+      : 'py-4 px-4 rounded-lg'
   } whitespace-nowrap appearance-none inline-block text-primary font-medium ${
     disable ? 'opacity-30 cursor-not-allowed' : 'clickable clickable-filter-effect'
   }`

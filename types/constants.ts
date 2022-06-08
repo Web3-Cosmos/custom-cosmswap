@@ -65,8 +65,8 @@ export type Vector = {
 }
 export type SpeedVector = Vector
 
-export type NormalSwap = 'Swap'
-export type LimitOrder = 'Limit Order'
-export type StopLoss = 'Stop Loss'
+export type Swap = 'SWAP'
+export type LimitOrder = 'LIMIT ORDER'
+export type StopLoss = 'STOP LOSS'
 
-export type SwapMode = NormalSwap | LimitOrder | StopLoss
+export type SwapMode = Swap | LimitOrder | StopLoss

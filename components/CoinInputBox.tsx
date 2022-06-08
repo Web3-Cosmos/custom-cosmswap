@@ -13,8 +13,12 @@ import {
   Input,
   Badge,
   Image,
+  ArrowDownIcon,
 } from '@/components'
 import { twMerge } from 'tailwind-merge'
+
+import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
+
 import { isString } from '@/functions/judgers/dateType'
 
 export interface CoinInputBoxHandle {
@@ -39,6 +43,7 @@ export interface CoinInputBoxProps {
   canSelect?: boolean
   onUserInput?(input: string): void
   onEnter?(input: string | undefined): void
+  onTryToTokenSelect?(): void
 }
 
 export default function CoinInputBox({
@@ -55,7 +60,10 @@ export default function CoinInputBox({
   canSelect,
   onUserInput,
   onEnter,
+  onTryToTokenSelect,
 }: CoinInputBoxProps) {
+
+  const { themeMode } = useAppSettings()
 
   const disabledInput = disabled || innerDisabledInput
   const disabledTokenSelect = disabled || innerDisabledTokenSelect
@@ -63,15 +71,16 @@ export default function CoinInputBox({
   const isOutsideValueLocked = useRef(false)
 
   const inputRef = useRef<HTMLInputElement>(null)
-  const focusInput = () => inputRef.current?.focus()
+  const focusInput = () => null
 
   useImperativeHandle(componentRef, () => ({
     focusInput: () => focusInput(),
-    selectToken: () => {}
+    selectToken: () => onTryToTokenSelect?.()
   } as CoinInputBoxHandle))
 
   return (
     <Row
+      domRef={domRef}
       className={twMerge(`flex bg-stack-3 cursor-text rounded-xl py-3 px-3 mobile:px-4`, className)}
       style={style}
       htmlProps={{tabIndex: 0}}
@@ -95,20 +104,21 @@ export default function CoinInputBox({
             ev.stopPropagation()
             ev.preventDefault()
             if (disabledTokenSelect) return
+            onTryToTokenSelect?.()
           }}
         >
           <CoinAvatar className="bg-primary" />
           <div className="text-primary font-extrabold text-base flex-grow mobile:text-sm whitespace-nowrap">
             {'BNB' ?? '--'}
           </div>
-          {canSelect && <Image src="/icons/arrow-down.svg"></Image>}
+          {canSelect && <ArrowDownIcon color={themeMode === 'light' ? '#4d4040' : '#ffffff'} />}
         </Row>
 
         {/* balance & price */}
         <Row className="justify-between mb-2 mobile:mb-4 px-2">
           <div
             className={`text-xs mobile:text-sm font-medium text-primary ${
-              disabledInput ? '' : 'clickable no-clicable-transform-effect clickable-filter-effect'
+              disabledInput ? '' : 'clickable no-clickable-transform-effect clickable-filter-effect'
             }`}
             onClick={() => {
               if (disabled) return
@@ -154,7 +164,7 @@ export default function CoinInputBox({
             }}
           />
 
-          <Row className="mb-2 mobile:mb-4 px-2">
+          <Row className="px-2">
             <div className="text-primary opacity-50 text-xs mobile:text-sm font-medium">
               BANANA
             </div>

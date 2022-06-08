@@ -11,6 +11,9 @@ export type AppSettingsStore = {
   isTablet: boolean
   isPc: boolean
 
+  /** sould block any update when approve panel shows on  */
+  isApprovePanelShown: boolean
+
   // <RefreshCircle /> needs a place to store state across app
   refreshCircleLastTimestamp: {
     [key: string]: {
@@ -26,5 +29,6 @@ export const useAppSettings = create<AppSettingsStore>(() => ({
   isMobile: getPlatformInfo()?.isMobile ?? false,
   isTablet: getPlatformInfo()?.isMobile ?? false,
   isPc: getPlatformInfo()?.isPc ?? false,
+  isApprovePanelShown: false,
   refreshCircleLastTimestamp: {}
 }))

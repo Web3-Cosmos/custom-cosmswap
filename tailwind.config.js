@@ -1,3 +1,4 @@
+const { ibasic, imix } = require('./styles/basicUtilsPlugins')
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
@@ -45,6 +46,6 @@ module.exports = {
     },
   },
   plugins: [
-    require('flowbite/plugin')
+    ibasic, imix
   ],
 }

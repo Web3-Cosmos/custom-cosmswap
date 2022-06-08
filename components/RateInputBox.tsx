@@ -43,22 +43,14 @@ export default function RateInputBox({
 
   return (
     <Row
-      className={twMerge(`relative flex bg-stack-3 cursor-text rounded-xl py-3 px-3 mobile:px-4`, className)}
+      className={twMerge(`flex bg-stack-3 cursor-text rounded-xl py-3 px-3 mobile:px-4`, className)}
       style={style}
       htmlProps={{tabIndex: 0}}
     >
-      <div className="absolute -top-7 inset-x-0 flex justify-center">
-        <Icon
-          size="lg"
-          heroIconName="switch-vertical"
-          className="bg-primary text-primary rounded-full p-2"
-          onClick={() => console.log("swap tokens")}
-        />
-      </div>
-      <Row className="flex-col flex-1 mr-3">
+      <Row className="flex-col flex-1 pr-3">
         {/* rate */}
         <Row className="mb-2 mobile:mb-4 items-center px-2">
-          <div className="text-xs font-bold mobile:text-sm text-primary mr-4">Rate:</div>
+          <div className="text-xs font-bold mobile:text-sm text-primary">Rate:</div>
         </Row>
 
         <Row className="justify-between mb-2 mobile:mb-4 px-2 invisible">
@@ -69,7 +61,7 @@ export default function RateInputBox({
 
         {/* input */}
         <Row
-          className="items-center justify-between gap-1.5 bg-stack-4 py-2 px-8 rounded-xl h-full"
+          className="items-center justify-between gap-1.5 bg-stack-4 py-2 px-8 rounded-xl h-full border-stack-4 border-2"
           onClick={(ev) => {
             ev.stopPropagation()
             ev.preventDefault()
@@ -99,11 +91,13 @@ export default function RateInputBox({
       </Row>
 
       <Row className="flex-1 flex-col ml-3 text-primary justify-center items-center bg-stack-4 rounded-xl py-2">
-        <div className="text-xs">When <span className="font-bold">BANANA</span> equals</div>
-        <div className="text-xs"><span className="text-default">0.02</span><span className="text-primary font-bold">{' '}BNR,</span></div>
-        <div className="text-xs"><span className="text-default">2000</span><span className="text-primary font-bold">{' '}BANANA,</span></div>
-        <div className="text-xs">will be swapped for</div>
-        <div className="text-xs"><span className="text-default">500</span><span className="text-primary font-bold">{' '}BANANA</span></div>
+        <div className="pl-3">
+          <div className="text-xs text-center">When <span className="font-bold">BANANA</span> equals</div>
+          <div className="text-xs text-center"><span className="text-default">0.02</span><span className="text-primary font-bold">{' '}BNR,</span></div>
+          <div className="text-xs text-center"><span className="text-default">2000</span><span className="text-primary font-bold">{' '}BANANA,</span></div>
+          <div className="text-xs text-center">will be swapped for</div>
+          <div className="text-xs text-center"><span className="text-default">500</span><span className="text-primary font-bold">{' '}BANANA</span></div>
+        </div>
       </Row>
     </Row>
   )

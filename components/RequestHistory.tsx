@@ -42,7 +42,7 @@ export default function RequestHistory({
   )
 
   return (
-    <Row domRef={ref} className={twMerge(`justify-around bg-stack-4 items-center`, className)}>
+    <Row domRef={ref} className={twMerge(`justify-between bg-stack-4 items-center`, className)}>
       <Tooltip tooltip={<RenderTooltip />}>
         <Icon size="lg" heroIconName="exclamation-circle" className="text-primary" />
       </Tooltip>

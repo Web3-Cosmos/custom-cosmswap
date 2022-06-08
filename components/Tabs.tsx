@@ -39,10 +39,10 @@ export default function Tabs<T extends string = string>({ affectUrlHash, classNa
   return (
     <RadioGroup
       {...restProps}
-      className={twMerge('rounded-full p-1 bg-stack-3', className)}
+      className={twMerge('rounded-lg p-1 bg-stack-3', className)}
       itemClassName={(checked) =>
         twMerge(
-          `grid min-w-[96px] mobile:min-w-[72px] px-4 h-9 mobile:h-7 rounded-full place-items-center text-sm mobile:text-xs font-medium ${
+          `grid min-w-[96px] mobile:min-w-[72px] px-4 h-9 mobile:h-7 rounded-lg place-items-center justify-center text-sm mobile:text-xs font-medium ${
             checked ? 'text-primary' : 'text-secondary'
           }`,
           shrinkToValue(restProps.itemClassName, [checked])

@@ -70,7 +70,7 @@ export interface IconProps {
   iconClassName?: string
   heroIconName?: AppHeroIconName
   src?: string
-  /** sx: 12px; sm: 16px; md: 20px; lg: 24px; xl: 32px (default: lg) */
+  /** xs: 12px; sm: 16px; md: 20px; lg: 24px; xl: 32px (default: lg) */
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   domRef?: RefObject<any>
   /** component outer display will be block not-inline (TODO: it's nice if it can stay in className)*/

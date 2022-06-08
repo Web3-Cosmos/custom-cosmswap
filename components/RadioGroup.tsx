@@ -37,11 +37,11 @@ export default function RadioGroup<T extends string>({
       style={style}
     >
       {values.map((value, idx, vals) => (
-        <_RadioGroup.Option value={value} key={idx} className="cursor-pointer flex">
+        <_RadioGroup.Option value={value} key={idx} className="cursor-pointer flex justify-center">
           {({ checked }) =>
             value && (
               <div
-                className={`grid place-items-center font-bold ${shrinkToValue(itemClassName, [checked])}`}
+                className={`grid place-items-center font-bold w-full ${shrinkToValue(itemClassName, [checked])}`}
                 style={shrinkToValue(itemStyle, [checked, idx, vals])}
               >
                 {labels[idx]}
