@@ -1,11 +1,11 @@
 import React from 'react'
 import { Story, ComponentMeta } from '@storybook/react'
 
-import CoinInputBox, { CoinInputBoxProps } from '@/components/CoinInputBox'
+import RequestHistory, { RequestHistoryProps } from '@/components/RequestHistory'
 
 export default {
-  title: 'Components/CoinInputBox',
-  component: CoinInputBox,
+  title: 'Components/RequestHistory',
+  component: RequestHistory,
   argTypes: {
     width: {
       control: { type: 'range', min: 420, max: 1600, step: 50 },
@@ -17,18 +17,18 @@ export default {
       url: 'https://www.figma.com/file/Vy0NbZMTj6yq3b7vBWMezV/Wasted-Talent-rebrand?node-id=846%3A64209',
     },
   },
-} as ComponentMeta<typeof CoinInputBox>
+} as ComponentMeta<typeof RequestHistory>
 
-const Template: Story<CoinInputBoxProps & { width: number }> = (args) => (
+const Template: Story<RequestHistoryProps & { width: number }> = (args) => (
   <div className="w-full bg-gray-700 p-5">
-    <CoinInputBox {...args} />
+    <div className="h-20" />
+    <RequestHistory {...args} />
   </div>
 )
 
 export const Primary = Template.bind({})
 
 Primary.args = {
-  topLeftLabel: 'Swap:',
-  canSelect: true,
-  haveHalfButton: true,
+  open: 'open',
+  onClick: (open) => console.log(open),
 }

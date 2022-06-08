@@ -33,7 +33,7 @@ export default function RadioGroup<T extends string>({
     <_RadioGroup
       value={currentValue}
       onChange={onChange ?? (() => {})}
-      className={twMerge(`flex ${className ?? ''}`)}
+      className={twMerge(`inline-flex ${className ?? ''}`)}
       style={style}
     >
       {values.map((value, idx, vals) => (
@@ -41,7 +41,7 @@ export default function RadioGroup<T extends string>({
           {({ checked }) =>
             value && (
               <div
-                className={`grid place-items-center ${shrinkToValue(itemClassName, [checked])}`}
+                className={`grid place-items-center font-bold ${shrinkToValue(itemClassName, [checked])}`}
                 style={shrinkToValue(itemStyle, [checked, idx, vals])}
               >
                 {labels[idx]}

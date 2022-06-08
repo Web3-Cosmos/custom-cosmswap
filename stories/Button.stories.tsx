@@ -20,9 +20,9 @@ export default {
 } as ComponentMeta<typeof Button>
 
 const Template: Story<ButtonProps & { width: number }> = (args) => (
-  <div className="w-full bg-gray-700">
+  <div className="w-full bg-gray-700 p-5">
     <Button {...args}>
-      Button
+      BUTTON
     </Button>
   </div>
 )

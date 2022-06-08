@@ -155,7 +155,7 @@ export default function Input(props: InputProps) {
 
   return (
     <Row
-      className={twMerge(`Input ${disabled ? 'cursor-not-allowed' : 'cursor-text'} items-center`, className)}
+      className={twMerge(`Input ${disabled ? 'cursor-not-allowed' : 'cursor-text'} h-8 items-center`, className)}
       onClick={() => {
         if (disabled || !inputRef.current) return
         inputRef.current.focus()
@@ -173,7 +173,7 @@ export default function Input(props: InputProps) {
           id={id}
           type={type}
           ref={mergeRef(inputRef, inputDomRef)}
-          className={`bg-transparent border-none w-full outline-none block ${inputClassName ?? ''}`} // start html input with only 2rem, if need width please define it in parent div
+          className={`bg-transparent border-none w-full outline-0 block focus:ring-transparent ${inputClassName ?? ''} ${disabled ? 'cursor-not-allowed' : ''}`} // start html input with only 2rem, if need width please define it in parent div
           value={isOutsideValueLocked ? selfValue ?? value : value ?? selfValue}
           placeholder={placeholder ? String(placeholder) : undefined}
           disabled={disabled}

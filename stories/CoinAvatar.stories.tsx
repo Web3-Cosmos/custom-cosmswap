@@ -4,7 +4,7 @@ import { Story, ComponentMeta } from '@storybook/react'
 import CoinAvatar, { CoinAvatarProps } from '@/components/CoinAvatar'
 
 export default {
-  title: 'Atom/CoinAvatar',
+  title: 'Components/CoinAvatar',
   component: CoinAvatar,
   argTypes: {
     width: {
@@ -20,7 +20,7 @@ export default {
 } as ComponentMeta<typeof CoinAvatar>
 
 const Template: Story<CoinAvatarProps & { width: number }> = (args) => (
-  <div className="w-screen bg-gray-700 h-96">
+  <div className="w-full bg-gray-700 p-5">
     <CoinAvatar {...args} />
   </div>
 )

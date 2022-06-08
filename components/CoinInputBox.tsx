@@ -12,6 +12,7 @@ import {
   Button,
   Input,
   Badge,
+  Image,
 } from '@/components'
 import { twMerge } from 'tailwind-merge'
 import { isString } from '@/functions/judgers/dateType'
@@ -87,7 +88,7 @@ export default function CoinInputBox({
 
         {/* coin selector - coin avatar, symbol & chevron down */}
         <Row
-          className={`items-center gap-1.5 bg-stack-4 p-2 mb-2 mobile:mb-4 rounded-xl ${
+          className={`items-center gap-1.5 bg-stack-4 p-2 mb-2 mobile:mb-4 rounded-xl border-stack-4 border-2 ${
             canSelect && !disabledTokenSelect ? 'clickable clickable-mask-offset-2' : ''
           }`}
           onClick={(ev) => {
@@ -100,7 +101,7 @@ export default function CoinInputBox({
           <div className="text-primary font-extrabold text-base flex-grow mobile:text-sm whitespace-nowrap">
             {'BNB' ?? '--'}
           </div>
-          {canSelect && <Icon size="xs" heroIconName="chevron-down" className="text-primary" />}
+          {canSelect && <Image src="/icons/arrow-down.svg"></Image>}
         </Row>
 
         {/* balance & price */}
@@ -129,7 +130,7 @@ export default function CoinInputBox({
 
         {/* input */}
         <Row
-          className={`items-center justify-between gap-1.5 ${disabledInput ? 'bg-transparent border-stack-4 border-2 cursor-not-allowed' : 'bg-stack-4'} py-2 px-8 mb-2 mobile:mb-4 rounded-xl h-full`}
+          className={`items-center justify-between gap-1.5 ${disabledInput ? 'bg-transparent border-stack-4 border-2 cursor-not-allowed' : 'bg-stack-4 border-transparent border-2'} py-2 px-8 mb-2 mobile:mb-4 rounded-xl`}
           onClick={(ev) => {
             ev.stopPropagation()
             ev.preventDefault()
@@ -137,7 +138,7 @@ export default function CoinInputBox({
           }}
         >
           <Input
-            className="font-extrabold text-lg text-primary flex-grow h-full"
+            className="font-extrabold text-lg text-primary flex-grow"
             disabled={disabledInput}
             type="number"
             // pattern={validPattern}
@@ -146,16 +147,18 @@ export default function CoinInputBox({
             // value={inputedAmount}
             // onUserInput={setInputedAmount}
             onEnter={onEnter}
-            inputClassName="text-left mobile:text-sm font-bold"
+            inputClassName={`text-left mobile:text-sm font-bold ${disabledInput ? 'opacity-50' : ''}`}
             inputHTMLProps={{
               onFocus: () => (isOutsideValueLocked.current = true),
               onBlur: () => (isOutsideValueLocked.current = false)
             }}
           />
 
-          <div className="text-primary opacity-50 text-sm font-medium">
-            BANANA
-          </div>
+          <Row className="mb-2 mobile:mb-4 px-2">
+            <div className="text-primary opacity-50 text-xs mobile:text-sm font-medium">
+              BANANA
+            </div>
+          </Row>
         </Row>
 
         <Row className="justify-between mb-2 mobile:mb-4 px-2 invisible">

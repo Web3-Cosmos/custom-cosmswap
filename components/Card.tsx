@@ -1,0 +1,31 @@
+import { CSSProperties, ReactNode, RefObject, useRef } from 'react'
+import { twMerge } from 'tailwind-merge'
+
+import mergeRef from '@/functions/react/mergeRef'
+import { useClickableElement } from '@/hooks/general/useClickableElement'
+
+export interface CardProps {
+  /** lg: rounded-xl. md: rounded-md */
+  size?: 'lg' | 'md'
+  domRef?: RefObject<HTMLDivElement | HTMLElement>
+  className?: string
+  style?: CSSProperties
+  htmlProps?: JSX.IntrinsicElements['div']
+  onClick?: () => void
+  children?: ReactNode
+}
+
+export default function Card({ size = 'md', domRef, children, style, onClick, className, htmlProps }: CardProps) {
+  const clickRef = useRef<HTMLDivElement>(null)
+  useClickableElement(clickRef, { onClick, disable: !onClick })
+  return (
+    <div
+      {...htmlProps}
+      className={twMerge(`Card ${size === 'lg' ? 'rounded-xl' : 'rounded-md'} w-full max-w-[680px] ${className ?? ''}`)}
+      ref={mergeRef(domRef as RefObject<HTMLDivElement>, clickRef)}
+      style={style}
+    >
+      {children}
+    </div>
+  )
+}

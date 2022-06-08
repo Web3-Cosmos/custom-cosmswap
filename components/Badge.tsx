@@ -29,13 +29,13 @@ export default function Badge({
       className={twMerge(
         `inline text-center items-center ${defaultSize === 'sm' ? 'p-1 text-xs' : 'p-1 px-2 text-sm'} ${
           type === 'solid'
-            ? 'bg-primary text-primary'
+            ? 'bg-primary'
             : `${noOutline ? '' : 'border'} border-primary`
-        } rounded-full`,
+        } rounded-full text-primary`,
         className
       )}
       style={{
-        color: cssColor ?? 'var(--text-primary)'
+        color: cssColor ?? ''
       }}
     >
       {children}

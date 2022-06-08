@@ -5,6 +5,8 @@ import {
   CoinAvatar,
   CoinInputBox,
   RateInputBox,
+  RequestHistory,
+  Card,
 } from '@/components'
 
 const Home: NextPage = () => {
@@ -43,6 +45,7 @@ const Home: NextPage = () => {
       />
       <RateInputBox className="mb-4" />
       <CoinInputBox
+        className="mb-4"
         domRef={swapElementBox2}
         disabledInput
         haveHalfButton
@@ -50,6 +53,13 @@ const Home: NextPage = () => {
         canSelect
         topLeftLabel="For"
       />
+      <Card className="bg-stack-2 p-5">
+        <Card className="bg-stack-3 p-5">
+          <Card className="bg-stack-4 p-5">
+            <RequestHistory />
+          </Card>
+        </Card>
+      </Card>
     </Layout>
   )
 }

@@ -39,15 +39,11 @@ export default function Tabs<T extends string = string>({ affectUrlHash, classNa
   return (
     <RadioGroup
       {...restProps}
-      className={twMerge('rounded-full p-1', className)}
-      style={{
-        background:
-          'linear-gradient(140.14deg, rgba(0, 182, 191, 0.15) 0%, rgba(27, 22, 89, 0.1) 86.61%), linear-gradient(321.82deg, #18134D 0%, #1B1659 100%)'
-      }}
+      className={twMerge('rounded-full p-1 bg-stack-3', className)}
       itemClassName={(checked) =>
         twMerge(
           `grid min-w-[96px] mobile:min-w-[72px] px-4 h-9 mobile:h-7 rounded-full place-items-center text-sm mobile:text-xs font-medium ${
-            checked ? 'text-white' : 'text-[#ABC4FF]'
+            checked ? 'text-primary' : 'text-secondary'
           }`,
           shrinkToValue(restProps.itemClassName, [checked])
         )
@@ -55,7 +51,7 @@ export default function Tabs<T extends string = string>({ affectUrlHash, classNa
       itemStyle={(checked, idx, values) =>
         checked
           ? {
-              background: 'linear-gradient(245.22deg, rgb(218, 46, 239), rgb(43, 106, 255), rgb(57, 208, 216))',
+              background: 'var(--primary)',
               backgroundSize: '400% 100%',
               backgroundPosition: toPercentString((1 / (values.length - 1)) * idx)
             }

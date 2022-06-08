@@ -4,7 +4,7 @@ import { Story, ComponentMeta } from '@storybook/react'
 import RateInputBox, { RateInputBoxProps } from '@/components/RateInputBox'
 
 export default {
-  title: 'Atom/RateInputBox',
+  title: 'Components/RateInputBox',
   component: RateInputBox,
   argTypes: {
     width: {
@@ -20,7 +20,7 @@ export default {
 } as ComponentMeta<typeof RateInputBox>
 
 const Template: Story<RateInputBoxProps & { width: number }> = (args) => (
-  <div className="w-full">
+  <div className="w-full bg-gray-700 p-5">
     <RateInputBox {...args} />
   </div>
 )

@@ -66,6 +66,7 @@ export type AppHeroIconName =
 
 export interface IconProps {
   className?: string
+  dataTooltipTarget?: string
   iconClassName?: string
   heroIconName?: AppHeroIconName
   src?: string
@@ -80,6 +81,7 @@ export interface IconProps {
 }
 
 export default function Icon({
+  dataTooltipTarget,
   heroIconName,
   iconClassName,
   src,

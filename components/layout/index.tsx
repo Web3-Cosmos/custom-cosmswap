@@ -6,7 +6,7 @@ export default function Layout(props: {
 
   useEffect(() => {
     document?.documentElement.classList.remove('dark', 'light')
-    document?.documentElement.classList.add('dark')
+    document?.documentElement.classList.add('light')
   }, [])
 
   return (

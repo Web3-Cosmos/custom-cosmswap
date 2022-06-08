@@ -9,15 +9,8 @@ import { getFileNameOfURI } from '@/functions/dom/getFileNameOfURI'
 /**
  * usually in the leading part of an list-item
  */
-export default function Image({
-  src,
-  fallbackSrc,
-  alt: alert,
-  onClick,
-  domRef,
-  className,
-  style
-}: {
+
+export interface ImageProps {
   /** can accept multi srcs */
   src: string | string[]
   fallbackSrc?: string
@@ -26,7 +19,17 @@ export default function Image({
   domRef?: RefObject<any>
   className?: string
   style?: CSSProperties
-}) {
+}
+
+export default function Image({
+  src,
+  fallbackSrc,
+  alt: alert,
+  onClick,
+  domRef,
+  className,
+  style
+}: ImageProps) {
   const ref = useRef<HTMLImageElement>(null)
   useClick(ref, { onClick })
   const srcSet = shakeUndefindedItem([src, fallbackSrc].flat())

@@ -20,7 +20,7 @@ export default {
 } as ComponentMeta<typeof Badge>
 
 const Template: Story<BadgeProps & { width: number }> = (args) => (
-  <div className="w-full bg-gray-700 text-primary">
+  <div className="w-full bg-stack-1 p-5">
     <Badge {...args}>
       Badge
     </Badge>

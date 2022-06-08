@@ -2,3 +2,4 @@
 @tailwind components;
 @tailwind utilities;
 @import url(colors.css);
+@import url(initialize.css);

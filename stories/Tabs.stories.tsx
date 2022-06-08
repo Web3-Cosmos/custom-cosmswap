@@ -20,7 +20,7 @@ export default {
 } as ComponentMeta<typeof Tabs>
 
 const Template: Story<TabProps & { width: number }> = (args) => (
-  <div className="w-full bg-gray-700">
+  <div className="bg-gray-700 p-5">
     <Tabs {...args} />
   </div>
 )
@@ -28,7 +28,7 @@ const Template: Story<TabProps & { width: number }> = (args) => (
 export const Primary = Template.bind({})
 
 Primary.args = {
-  currentValue: "Swap",
-  values: ['Swap', 'Limit Order', 'Stop Loss'],
+  currentValue: "SWAP",
+  values: ['SWAP', 'LIMIT ORDER', 'STOP LOSS'],
   onChange: (newTab: string) => console.log(newTab)
 }
