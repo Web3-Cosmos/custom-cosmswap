@@ -14,10 +14,11 @@ import {
   ResponsiveDialogDrawer,
   Switch,
 } from '@/components'
+
 import { useToggle } from '@/hooks/general/useToggle'
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
 
-export default function TokenSelectorDialog(props: Parameters<typeof TokenSelectorDialogContent>[0]) {
+export default function TokenSelectDialog(props: Parameters<typeof TokenSelectDialogContent>[0]) {
   return (
     <ResponsiveDialogDrawer
       maskNoBlur
@@ -26,12 +27,12 @@ export default function TokenSelectorDialog(props: Parameters<typeof TokenSelect
       open={props.open}
       onClose={props.close}
     >
-      {({ close: closePanel }) => <TokenSelectorDialogContent {...props} close={closePanel} />}
+      {({ close: closePanel }) => <TokenSelectDialogContent {...props} close={closePanel} />}
     </ResponsiveDialogDrawer>
   )
 }
 
-function TokenSelectorDialogContent({
+function TokenSelectDialogContent({
   open,
   close: closePanel,
   onSelectCoin
@@ -62,9 +63,7 @@ function TokenSelectorDialogContent({
     <Card
       className="flex flex-col shadow-xl rounded-3xl mobile:rounded-none w-[min(468px,100vw)] mobile:w-full h-[min(680px,100vh)] mobile:h-screen border border-stack-4 bg-stack-2"
       size="lg"
-      style={{
-        boxShadow: '0px 0px 48px rgba(171, 196, 255, 0.24)'
-      }}
+      style={{ boxShadow: '0px 0px 48px rgba(171, 196, 255, 0.24)' }}
       htmlProps={{
         onKeyDown: (e) => {
           if (e.key === 'ArrowUp') {
@@ -173,7 +172,7 @@ function TokenSelectorDialogContent({
                       }
                     }}
                   >
-                    <TokenSelectorDialogTokenItem
+                    <TokenSelectDialogTokenItem
                       onClick={() => {
                         closeAndClean()
                       }}
@@ -194,7 +193,7 @@ function TokenSelectorDialogContent({
   )
 }
 
-function TokenSelectorDialogTokenItem({ token, onClick }: { token: number; onClick?(): void }) {
+function TokenSelectDialogTokenItem({ token, onClick }: { token: number; onClick?(): void }) {
   return (
     <Row onClick={onClick} className="group w-full gap-4 justify-between items-center p-2 ">
       <Row>

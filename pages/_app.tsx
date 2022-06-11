@@ -1,8 +1,13 @@
 import '../styles/globals.css'
+
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 
 import NextNProgress from 'nextjs-progressbar'
+
+import {
+  WalletSelectDialog,
+} from '@/components'
 
 import {
   useThemeModeSync,
@@ -25,6 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
 
       {/* global components */}
+      <WalletSelectDialog />
     </div>
   )
 }

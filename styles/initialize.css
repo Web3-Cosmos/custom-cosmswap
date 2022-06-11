@@ -10,7 +10,8 @@ body {
     'Segoe UI Symbol';
   font-feature-settings: 'ss04', 'tnum' 0;
   color: var(--primary);
-  background-color: rgb(19, 26, 53);
+  /* background-color: rgb(19, 26, 53); */
+  background-color: var(--bg-stack-1);
   letter-spacing: .05em;
 }
 
@@ -20,7 +21,7 @@ body {
     width: 7px;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--primary);
     border-radius: 8px;
   }
 }

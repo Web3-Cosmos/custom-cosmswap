@@ -46,7 +46,8 @@ function Swap() {
 
   const [isCoinSelectorOn, { on: turnOnCoinSelector, off: turnOffCoinSelector }] = useToggle()
 
-  const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
+  const { isApprovePanelShown, isWalletSelectShown } = useAppSettings()
+  // const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
 
   const { hasAcceptedPriceChange, swapButtonComponentRef, coinInputBox1ComponentRef, coinInputBox2ComponentRef } = useSwapContextStore()
 
@@ -83,7 +84,7 @@ function Swap() {
         </Card>
 
         {/* swap button */}
-        <div className="absolute top-[14rem] inset-x-0 flex justify-center">
+        <div className={`absolute top-[14rem] inset-x-0 flex justify-center ${isCoinSelectorOn || isWalletSelectShown ? '' : 'z-10'}`}>
           <Icon
             size="lg"
             heroIconName="switch-vertical"
