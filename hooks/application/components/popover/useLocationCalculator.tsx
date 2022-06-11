@@ -1,8 +1,20 @@
 import { RefObject, useCallback, useEffect, useState } from 'react'
 
-import { PopoverPlacement } from '@/components'
-
 import { getScrollParents } from '@/functions/dom/getScrollParents'
+
+export type PopoverPlacement =
+  | 'left'
+  | 'left-top'
+  | 'left-bottom'
+  | 'right'
+  | 'right-top'
+  | 'right-bottom'
+  | 'top'
+  | 'top-left'
+  | 'top-right'
+  | 'bottom'
+  | 'bottom-left'
+  | 'bottom-right'
 
 export type PopupLocationInfo = {
   // reltive to screen
