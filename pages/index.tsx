@@ -19,8 +19,13 @@ import {
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
 import { useToggle } from '@/hooks/general/useToggle'
 import { useSwapTwoElements } from '@/hooks/general/useSwapTwoElements'
+import { useToken } from '@/hooks/application/token/useToken'
 
 import createContextStore from '@/functions/react/createContextStore'
+
+import { useWeb3React } from '@web3-react/core'
+import { Web3Provider } from '@ethersproject/providers'
+import { InjectedConnector } from '@web3-react/injected-connector'
 
 const { ContextProvider: SwapUIContextProvider, useStore: useSwapContextStore } = createContextStore({
   hasAcceptedPriceChange: false,
@@ -30,6 +35,10 @@ const { ContextProvider: SwapUIContextProvider, useStore: useSwapContextStore } 
 })
 
 const Home: NextPage = () => {
+
+  // const injectedConnector = new InjectedConnector({supportedChainIds: [1,3, 4, 5, 42, ],})
+  // const { chainId, account, activate, active,library } = useWeb3React<Web3Provider>()
+
   return (
     <SwapUIContextProvider>
       <Swap />

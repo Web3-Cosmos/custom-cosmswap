@@ -17,6 +17,7 @@ import {
 
 import { useToggle } from '@/hooks/general/useToggle'
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
+import { useToken } from '@/hooks/application/token/useToken'
 
 export default function TokenSelectDialog(props: Parameters<typeof TokenSelectDialogContent>[0]) {
   return (
@@ -42,22 +43,22 @@ function TokenSelectDialogContent({
   onSelectCoin?: () => unknown
 }) {
   
-  const isMobile = useAppSettings((s) => s.isMobile)
-  
   const [searchText, setSearchText] = useState('')
+  // some keyboard (arrow up/down / mouse hover) will change the selected index
+  const [selectedTokenIdx, setSelectedTokenIdx] = useState(0)
+  const userCustomizedTokenSymbol = useRef('')
+  
+  const isMobile = useAppSettings((s) => s.isMobile)
 
   // used for if panel is not tokenList but tokenlistList
   const [currentTabIsTokenList, { on, off }] = useToggle()
+
+  const { availableTokens, filteredTokens, availableTokenListSettings } = useToken()
 
   const closeAndClean = useCallback(() => {
     setSearchText('')
     closePanel?.()
   }, [])
-
-  // some keyboard (arrow up/down / mouse hover) will change the selected index
-  const [selectedTokenIdx, setSelectedTokenIdx] = useState(0)
-
-  const userCustomizedTokenSymbol = useRef('')
 
   return (
     <Card
@@ -95,16 +96,18 @@ function TokenSelectDialogContent({
             />
           </Row>
           <List className="p-2 grid mt-2 overflow-auto">
-            {[...Array(3).keys()].map((index) => (
-              <List.Item key={`list_${index}`}>
-                <TokenSelectorDialogTokenListItem tokenListName={index} />
+            {Object.keys(availableTokenListSettings).map((key: string) => (
+              <List.Item key={`token_list_${availableTokenListSettings[key].logoURI}`}>
+                <TokenSelectorDialogTokenListItem token={availableTokenListSettings[key]} />
               </List.Item>
             ))}
           </List>
         </div>
       ) : (
         <>
+          {/* header */}
           <div className="px-8 mobile:px-6 pt-6 pb-5">
+            {/* label - select a token */}
             <Row className="justify-between items-center mb-6">
               <div className="text-xl font-semibold text-primary">Select a token</div>
               <Icon
@@ -114,6 +117,7 @@ function TokenSelectDialogContent({
               />
             </Row>
 
+            {/* search input box */}
             <Input
               value={searchText}
               placeholder="Search name or address"
@@ -127,8 +131,10 @@ function TokenSelectDialogContent({
               suffix={<Icon heroIconName="search" size="sm" className="text-disabled" />}
             />
 
+            {/* label - popular tokens */}
             <div className="text-xs font-medium text-secondary my-3">Popular tokens</div>
 
+            {/* popular tokens */}
             <Row type="grid" className="grid-cols-4 gap-x-3 gap-y-1">
               {([...Array(4).keys()].map((index) => {
                 return (
@@ -147,8 +153,10 @@ function TokenSelectDialogContent({
             </Row>
           </div>
 
+          {/* body - divider */}
           <div className="mobile:mx-6 border-t-[1.5px] border-stack-4"></div>
 
+          {/* all available tokens */}
           <Col className="flex-1 overflow-hidden border-b-[1.5px] py-3 border-stack-4">
             <Row className="px-8 mobile:px-6 justify-between">
               <div className="text-xs font-medium text-secondary">Token</div>
@@ -156,8 +164,9 @@ function TokenSelectDialogContent({
             </Row>
             <ListFast
               className="flex-grow flex flex-col px-4 mobile:px-2 mx-2 gap-2 overflow-auto my-2"
-              sourceData={[...Array(10).keys()]}
-              getKey={(index) => index}
+              sourceData={availableTokens.filter(availableToken => availableTokenListSettings[availableToken.tokenListSettings].isOn)}
+              // sourceData={availableTokens}
+              getKey={(token: any, idx) => token.address ?? idx}
               renderItem={(token, idx) => (
                 <div>
                   <Row
@@ -184,6 +193,7 @@ function TokenSelectDialogContent({
             />
           </Col>
 
+          {/* footer - button - view token list */}
           <Button type="text" className="w-full py-3 rounded-none font-bold text-sm text-default" onClick={on}>
             View Token List
           </Button>
@@ -193,14 +203,14 @@ function TokenSelectDialogContent({
   )
 }
 
-function TokenSelectDialogTokenItem({ token, onClick }: { token: number; onClick?(): void }) {
+function TokenSelectDialogTokenItem({ token, onClick }: { token: any; onClick?(): void }) {
   return (
     <Row onClick={onClick} className="group w-full gap-4 justify-between items-center p-2 ">
       <Row>
-        <CoinAvatar className="mr-4" />
+        <CoinAvatar className="mr-4" src={token.logoURI} />
         <Col className="mr-2">
-          <div className="text-base font-medium text-primary">BANANA</div>
-          <div className="text-xs font-semibold text-secondary">BANANA</div>
+          <div className="text-base font-medium text-primary">{token.symbol}</div>
+          <div className="text-xs font-semibold text-secondary">{token.name}</div>
         </Col>
       </Row>
       <div className="text-sm text-primary justify-self-end">123</div>
@@ -208,17 +218,35 @@ function TokenSelectDialogTokenItem({ token, onClick }: { token: number; onClick
   )
 }
 
-function TokenSelectorDialogTokenListItem({ tokenListName }: { tokenListName: number }) {  
+function TokenSelectorDialogTokenListItem({ token }: { token: any }) {
+
+  const { availableTokenListSettings, filteredTokens } = useToken()
+
+  const tokenListSetting = availableTokenListSettings[token.name]
+  const isOn = tokenListSetting.isOn
+
+  const toggleTokenListSettings = () => {
+    useToken.setState((s) => ({
+      availableTokenListSettings: {
+        ...s.availableTokenListSettings,
+        [token.name]: {
+          ...s.availableTokenListSettings[token.name],
+          isOn: !s.availableTokenListSettings[token.name].isOn,
+        }
+      },
+    }))
+  }
+
   return (
     <Row className="my-4 items-center">
-      <CoinAvatar className="mr-4" src="/coins/solarmy.png" />
+      <CoinAvatar className="mr-4" src={token.logoURI} />
 
       <Col>
-        <div className="text-base font-medium text-primary">{tokenListName}</div>
-        <div className="text-xs font-semibold text-secondary">Ethereum Mainnet</div>
+        <div className="text-base font-medium text-primary">{token.name}</div>
+        <div className="text-xs font-semibold text-secondary">{token.length} tokens</div>
       </Col>
 
-      <Switch className="ml-auto" defaultChecked disabled={Math.random() > .5 ? true : false} />
+      <Switch className="ml-auto" defaultChecked={isOn} onToggle={toggleTokenListSettings} />
     </Row>
   )
 }
