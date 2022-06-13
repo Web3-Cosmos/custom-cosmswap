@@ -36,11 +36,11 @@ export default function TokenSelectDialog(props: Parameters<typeof TokenSelectDi
 function TokenSelectDialogContent({
   open,
   close: closePanel,
-  onSelectCoin
+  onSelectToken,
 }: {
   open: boolean
   close: () => void
-  onSelectCoin?: () => unknown
+  onSelectToken?: () => unknown
 }) {
   
   const [searchText, setSearchText] = useState('')
@@ -54,6 +54,28 @@ function TokenSelectDialogContent({
   const [currentTabIsTokenList, { on, off }] = useToggle()
 
   const { availableTokens, filteredTokens, availableTokenListSettings } = useToken()
+
+  const searchedTokens = useMemo(
+    () =>
+      searchText
+        ? firstFullMatched(
+          availableTokens
+            .filter(availableToken => availableTokenListSettings[availableToken.tokenListSettings].isOn)
+            .filter((token) =>
+              searchText
+                .split(' ')
+                .every(
+                  (keyWord) => new RegExp(`^.*${keyWord.toLowerCase()}.*$`).test(token.symbol?.toLowerCase() ?? '')
+                )
+            ),
+            searchText
+          )
+        : availableTokens.filter(availableToken => availableTokenListSettings[availableToken.tokenListSettings].isOn),
+    [searchText, availableTokens]
+  )
+  function firstFullMatched(tokens: any[], searchText: string): any[] {
+    return tokens.filter(token => token.symbol?.toLowerCase().includes(searchText.toLowerCase()))
+  }
 
   const closeAndClean = useCallback(() => {
     setSearchText('')
@@ -164,15 +186,14 @@ function TokenSelectDialogContent({
             </Row>
             <ListFast
               className="flex-grow flex flex-col px-4 mobile:px-2 mx-2 gap-2 overflow-auto my-2"
-              sourceData={availableTokens.filter(availableToken => availableTokenListSettings[availableToken.tokenListSettings].isOn)}
-              // sourceData={availableTokens}
+              sourceData={searchedTokens}
               getKey={(token: any, idx) => token.address ?? idx}
               renderItem={(token, idx) => (
                 <div>
                   <Row
                     className={`${
                       selectedTokenIdx === idx
-                        ? 'clickable no-clickable-transform-effect clickable-mask-offset-2'
+                        ? 'clickable no-clickable-transform-effect clickable-mask-offset-2 before:bg-[rgba(0,0,0,0.2)]'
                         : ''
                     }`}
                     onHoverChange={({ is: hoverStatus }) => {
@@ -220,7 +241,7 @@ function TokenSelectDialogTokenItem({ token, onClick }: { token: any; onClick?()
 
 function TokenSelectorDialogTokenListItem({ token }: { token: any }) {
 
-  const { availableTokenListSettings, filteredTokens } = useToken()
+  const { availableTokenListSettings } = useToken()
 
   const tokenListSetting = availableTokenListSettings[token.name]
   const isOn = tokenListSetting.isOn

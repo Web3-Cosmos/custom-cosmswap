@@ -19,7 +19,6 @@ import { twMerge } from 'tailwind-merge'
 
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
 
-import { isString } from '@/functions/judgers/dateType'
 
 export interface CoinInputBoxHandle {
   focusInput?: () => void

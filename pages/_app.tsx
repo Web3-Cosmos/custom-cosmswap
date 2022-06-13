@@ -5,14 +5,16 @@ import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import NextNProgress from 'nextjs-progressbar'
 import { Web3Provider } from '@ethersproject/providers'
+import { Web3ReactProvider } from '@web3-react/core'
 
-import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
-
-import { WalletSelectDialog } from '@/components'
+import {
+  WalletSelectDialog,
+  Notification,
+} from '@/components'
 
 import { useThemeModeSync, useDeviceInfoSync } from '@/hooks/application/appSettings/initializationHooks'
 import { useTokenLists } from '@/hooks/application/token/useTokenLists'
-
+import { useWalletConfig } from '@/hooks/application/wallet/useWalletConfig'
 
 // const Web3ProviderNetwork = typeof window !== "undefined" ? createWeb3ReactRoot('NETWORK') : null
 
@@ -41,6 +43,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         {/* global components */}
         <WalletSelectDialog />
+        <Notification />
       </div>
     </Web3ReactProvider>
   )
@@ -54,6 +57,7 @@ function ClientInitialization() {
 
 function ApplicationInitialization() {
   useTokenLists()
+  useWalletConfig()
   return null
 }
 

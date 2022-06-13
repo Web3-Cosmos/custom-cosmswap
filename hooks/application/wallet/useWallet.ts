@@ -1,18 +1,22 @@
 import BN from 'bn.js'
 import create from 'zustand'
+import { AbstractConnector } from '@web3-react/abstract-connector'
+import { WalletInfo } from '../token/constants'
+import { SUPPORTED_WALLETS } from '@/hooks/application/token/constants'
 
 export type WalletStore = {
-  // owner
-  owner: string | undefined
+  // account
+  account: string | undefined
 
-  wallets: any[]
+  wallets: Record<string, WalletInfo>
 
   connected: boolean
   disconnecting: boolean
   connecting: boolean
 
-  select(walletName: string): void
-  disconnect(): Promise<unknown>
+  connect(connector: AbstractConnector ): void
+  disconnect(): void
+  error: any
   
   // just for trigger refresh
   refreshCount: number
@@ -20,20 +24,18 @@ export type WalletStore = {
 }
 
 export const useWallet = create<WalletStore>((set, get) => ({
-  // owner
-  owner: undefined,
+  // account
+  account: undefined,
 
-  wallets: [...Array(7).keys()].map(value => ({
-    adapter: { name: `Phantom_${value}` },
-    readyState: value % 2 === 0 ? 'installed' : 'notInstalled',
-  })),
+  wallets: SUPPORTED_WALLETS,
 
   connected: false,
   disconnecting: false,
   connecting: false,
 
-  select: () => {},
-  disconnect: () => Promise.resolve(),
+  connect: () => {},
+  disconnect: () => {},
+  error: {},
 
   refreshCount: 0,
   async refreshWallet() {}

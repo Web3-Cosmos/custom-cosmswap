@@ -17,9 +17,10 @@ import {
 } from '@/components'
 
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
+import { useToken } from '@/hooks/application/token/useToken'
+import { useSwap } from '@/hooks/application/swap/useSwap'
 import { useToggle } from '@/hooks/general/useToggle'
 import { useSwapTwoElements } from '@/hooks/general/useSwapTwoElements'
-import { useToken } from '@/hooks/application/token/useToken'
 
 import createContextStore from '@/functions/react/createContextStore'
 
@@ -49,16 +50,21 @@ const Home: NextPage = () => {
 function Swap() {
   const swapElementBox1 = useRef<HTMLDivElement>(null)
   const swapElementBox2 = useRef<HTMLDivElement>(null)
-  const [hasUISwrapped, { toggleSwap: toggleUISwap }] = useSwapTwoElements(swapElementBox1, swapElementBox2, {
+  const [hasUISwapped, { toggleSwap: toggleUISwap }] = useSwapTwoElements(swapElementBox1, swapElementBox2, {
     defaultHasWrapped: false
   })
 
-  const [isCoinSelectorOn, { on: turnOnCoinSelector, off: turnOffCoinSelector }] = useToggle()
+  const [isTokenSelectOn, { on: turnOnTokenSelect, off: turnOffTokenSelect }] = useToggle()
 
   const { isApprovePanelShown, isWalletSelectShown } = useAppSettings()
   // const isApprovePanelShown = useAppSettings((s) => s.isApprovePanelShown)
 
   const { hasAcceptedPriceChange, swapButtonComponentRef, coinInputBox1ComponentRef, coinInputBox2ComponentRef } = useSwapContextStore()
+
+  const { coin1, coin2, directionReversed } = useSwap()
+  const switchDirectionReversed = useCallback(() => {
+    useSwap.setState(s => ({directionReversed: !s.directionReversed}))
+  }, [])
 
   return (
     <Layout>
@@ -75,7 +81,7 @@ function Swap() {
             canSelect
             // topLeftLabel={hasUISwrapped ? 'To' : 'From'}
             onTryToTokenSelect={() => {
-              turnOnCoinSelector()
+              turnOnTokenSelect()
               // setTargetCoinNo('1')
             }}
             // onEnter={(input) => {
@@ -93,7 +99,7 @@ function Swap() {
         </Card>
 
         {/* swap button */}
-        <div className={`absolute top-[14rem] inset-x-0 flex justify-center ${isCoinSelectorOn || isWalletSelectShown ? '' : 'z-10'}`}>
+        <div className={`absolute top-[15rem] inset-x-0 flex justify-center ${isTokenSelectOn || isWalletSelectShown ? '' : 'z-10'}`}>
           <Icon
             size="lg"
             heroIconName="switch-vertical"
@@ -103,6 +109,7 @@ function Swap() {
             onClick={() => {
               if (isApprovePanelShown) return
               toggleUISwap()
+              switchDirectionReversed()
             }}
           />
         </div>
@@ -122,7 +129,7 @@ function Swap() {
             haveCoinIcon
             canSelect
             onTryToTokenSelect={() => {
-              turnOnCoinSelector()
+              turnOnTokenSelect()
               // setTargetCoinNo('1')
             }}
             topLeftLabel="For:"
@@ -184,8 +191,8 @@ function Swap() {
       </Card>
 
       <TokenSelectDialog
-        open={isCoinSelectorOn}
-        close={turnOffCoinSelector}
+        open={isTokenSelectOn}
+        close={turnOffTokenSelect}
       />
     </Layout>
   )

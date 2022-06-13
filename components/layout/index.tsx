@@ -23,7 +23,7 @@ export default function Layout(props: {
 
   return (
     <Col className="w-full min-h-screen bg-stack-1 justify-start items-center p-5">
-      <Grid className="w-full grid-cols-3 justify-between items-center">
+      <Grid className="w-full grid-cols-3 justify-between items-center fixed inset-x-0 top-0 p-5 bg-stack-1 z-50 border-b border-stack-2">
         <Link href="/">
           <Image className="cursor-pointer" src="/logo/logo-only-icon.svg" />
         </Link>
@@ -39,7 +39,7 @@ export default function Layout(props: {
         <WalletWidget />
       </Grid>
 
-      <div className="mt-5">
+      <div className="mt-20">
         {props.children}
       </div>
     </Col>

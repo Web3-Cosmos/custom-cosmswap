@@ -29,7 +29,7 @@ export interface NotificationStore {
   logWarning(title: string, description?: ReactNode): void
   logSuccess(title: string, description?: ReactNode): void
   logInfo(title: string, description?: ReactNode): void
-  popConfirm(info: ConfirmDialogInfo): void
+  popupConfirm(info: ConfirmDialogInfo): void
   popupWelcomeDialog(renderContent: ReactNode, cb?: { onConfirm?: () => void }): void
 }
 
@@ -41,7 +41,7 @@ export const useNotification = create<NotificationStore>(() => ({
   logWarning: () => {},
   logSuccess: () => {},
   logInfo: () => {},
-  popConfirm: () => {},
+  popupConfirm: () => {},
   popupWelcomeDialog: () => {}
 }))
 

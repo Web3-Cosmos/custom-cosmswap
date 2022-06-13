@@ -1,5 +1,8 @@
 import React, { ReactNode, useEffect } from 'react'
 
+import { useWeb3React } from '@web3-react/core'
+import { Web3Provider } from '@ethersproject/providers'
+
 import {
   Button,
   Icon,
@@ -10,6 +13,7 @@ import {
 } from '@/components'
 
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
+import { useNotification } from '@/hooks/application/notification/useNotification'
 import { useToggle } from '@/hooks/general/useToggle'
 import { useWallet } from '@/hooks/application/wallet/useWallet'
 
@@ -38,33 +42,47 @@ function WalletWidgetItem({
   )
 }
 
-/** this should be used in ./Navbar.tsx */
+// used in layout
 export default function WalletWidget() {
   const { isMobile, themeMode } = useAppSettings()
 
   const [isCopied, { delayOff, on }] = useToggle()
 
+  const { chainId, active, connector, activate, deactivate } = useWeb3React<Web3Provider>()
+
+  // const { logSuccess, logError, logWarning, logInfo } = useNotification.getState()
+
   useEffect(() => {
     if (isCopied) delayOff()
   }, [isCopied])
 
-  const { owner: publicKey, disconnect, connected } = useWallet()
+  // useEffect(() => {
+  //   logSuccess('RPC Switch Success ', `new rpc: connected`)
+  //   logError('ERROR', 'no RPC')
+  //   logWarning('Warning', 'no RPC')
+  //   logInfo('Info', 'no RPC')
+  // }, [])
+
+  const { account, disconnect, connected } = useWallet()
 
   return (
     <Row className="justify-end">
       {connected ? (
         <Button
-          className="inline-flex items-center"
-          onClick={() => useAppSettings.setState({ isWalletSelectShown: false })}
+          className="inline-flex items-center bg-stack-3"
+          onClick={() => {
+            disconnect()
+            useAppSettings.setState({ isWalletSelectShown: false })
+          }}
         >
           <div className="mr-2">
             <WalletConnectedIcon size="md" color={themeMode === 'light' ? '#4d4040' : '#ffffff'} />
           </div>
-          CONNECTED
+          {`${account?.slice(0, 4)}...${account?.slice(account.length - 4)}`}
         </Button>
       ) : (
         <Button
-          className="inline-flex items-center"
+          className="inline-flex items-center bg-transparent"
           onClick={() => useAppSettings.setState({ isWalletSelectShown: true })}
         >
           <div className="mr-2">

@@ -23,7 +23,7 @@ export default {
       url: 'https://www.figma.com/file/Vy0NbZMTj6yq3b7vBWMezV/Wasted-Talent-rebrand?node-id=846%3A64209',
     },
   },
-} as ComponentMeta<typeof ArrowDownIcon>
+} as ComponentMeta<typeof Grid>
 
 const Template: Story<GridProps & { width: number }> = (args) => (
   <div className="w-full bg-gray-700 p-5">
