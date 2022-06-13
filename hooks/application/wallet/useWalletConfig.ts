@@ -23,6 +23,7 @@ export function useWalletConfig() {
       return true
     })
 
+    // @ts-ignore
     if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
       connector.walletConnectProvider = undefined
     }
