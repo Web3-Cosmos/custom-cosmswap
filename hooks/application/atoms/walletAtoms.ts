@@ -49,6 +49,7 @@ function createWalletState<TClient = any, TState = {}>({
       ({ onSet, setSelf }) => {
         const CACHE_KEY = `@wasmswap/wallet-state/type-${key}`
 
+        // eslint-disable-next-line no-undef
         const savedValue = globalThis.localStorage?.getItem(CACHE_KEY)
 
         if (savedValue) {
@@ -69,8 +70,10 @@ function createWalletState<TClient = any, TState = {}>({
           const isReset = !newValue.address && (oldValue as any)?.address
 
           if (isReset) {
+            // eslint-disable-next-line no-undef
             globalThis.localStorage?.removeItem(CACHE_KEY)
           } else {
+            // eslint-disable-next-line no-undef
             globalThis.localStorage?.setItem(
               CACHE_KEY,
               /* let's not store the client in the cache */

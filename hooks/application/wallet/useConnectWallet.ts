@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate'
 import { GasPrice } from '@cosmjs/stargate'
 import { useEffect } from 'react'
