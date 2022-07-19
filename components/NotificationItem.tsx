@@ -4,12 +4,7 @@ import { Transition } from '@headlessui/react'
 import { useHover } from '@/hooks/general/useHover'
 import { useToggle } from '@/hooks/general/useToggle'
 
-import {
-  Card,
-  Icon,
-  AppHeroIconName,
-  Row,
-} from '@/components'
+import { Card, Icon, AppHeroIconName, Row } from '@/components'
 
 export interface NotificationItemInfo {
   type?: 'success' | 'warning' | 'error' | 'info'
@@ -18,7 +13,8 @@ export interface NotificationItemInfo {
   description?: ReactNode
 }
 
-const itemExistTime = process.env.NODE_ENV === 'development' ? 7 * 1000 : 3 * 1000 // (ms)
+const itemExistTime =
+  process.env.NODE_ENV === 'development' ? 7 * 1000 : 3 * 1000 // (ms)
 
 const colors: Record<
   NotificationItemInfo['type'] & string,
@@ -28,34 +24,42 @@ const colors: Record<
     heroIconName: 'check-circle',
     ring: 'ring-primary',
     text: 'text-primary',
-    bg: 'bg-primary'
+    bg: 'bg-primary',
   },
   error: {
     heroIconName: 'exclamation-circle',
     ring: 'ring-[#DA2EEF]',
     text: 'text-[#DA2EEF]',
-    bg: 'bg-[#e54bf9]'
+    bg: 'bg-[#e54bf9]',
   },
   info: {
     heroIconName: 'information-circle',
     ring: 'ring-[#2e7cf8]',
     text: 'text-[#2e7cf8]',
-    bg: 'bg-stack-4'
+    bg: 'bg-stack-4',
   },
   warning: {
     heroIconName: 'exclamation',
     ring: 'ring-[#D8CB39]',
     text: 'text-primary',
-    bg: 'bg-primary'
-  }
+    bg: 'bg-primary',
+  },
 }
 
-export default function NotificationItem({ description, title, subtitle, type = 'info' }: NotificationItemInfo) {
+export default function NotificationItem({
+  description,
+  title,
+  subtitle,
+  type = 'info',
+}: NotificationItemInfo) {
   const [isOpen, { off: close }] = useToggle(true)
   const [nodeExist, { off: destory }] = useToggle(true)
-  const [isTimePassing, { off: pauseTimeline, on: resumeTimeline }] = useToggle(true)
+  const [isTimePassing, { off: pauseTimeline, on: resumeTimeline }] =
+    useToggle(true)
 
-  const timeoutController = useRef(spawnTimeoutControllers({ callback: close, totalDuration: itemExistTime }))
+  const timeoutController = useRef(
+    spawnTimeoutControllers({ callback: close, totalDuration: itemExistTime })
+  )
   const itemRef = useRef<HTMLDivElement>(null)
 
   // for transition
@@ -75,7 +79,7 @@ export default function NotificationItem({ description, title, subtitle, type = 
         timeoutController.current.resume()
         resumeTimeline()
       }
-    }
+    },
   })
 
   if (!nodeExist) return null
@@ -111,7 +115,10 @@ export default function NotificationItem({ description, title, subtitle, type = 
       afterLeave={destory}
     >
       {/* U have to gen another <div> to have the gap between <NotificationItem> */}
-      <div ref={itemWrapperRef} className={`overflow-hidden mobile:w-screen transition-all duration-500`}>
+      <div
+        ref={itemWrapperRef}
+        className={`overflow-hidden mobile:w-screen transition-all duration-500`}
+      >
         <Card
           domRef={itemRef}
           className={`min-w-[260px] relative rounded-xl ring-1.5 ring-inset ${colors[type].ring} bg-stack-2 py-4 pl-5 pr-10 my-2 overflow-hidden pointer-events-auto`}
@@ -125,7 +132,7 @@ export default function NotificationItem({ description, title, subtitle, type = 
               className={`${colors[type].bg} absolute inset-0`}
               style={{
                 animation: `shrink ${itemExistTime}ms linear forwards`,
-                animationPlayState: isTimePassing ? 'running' : 'paused'
+                animationPlayState: isTimePassing ? 'running' : 'paused',
               }}
             />
           </div>
@@ -145,12 +152,21 @@ export default function NotificationItem({ description, title, subtitle, type = 
             className="rounded-full absolute top-3 right-1 h-5 w-5 text-secondary cursor-pointer"
           /> */}
           <Row className="gap-3">
-            <Icon heroIconName={colors[type].heroIconName} className={colors[type].text} />
+            <Icon
+              heroIconName={colors[type].heroIconName}
+              className={colors[type].text}
+            />
             <div>
               <div className="font-medium text-base text-primary">{title}</div>
-              {subtitle && <div className="font-normal text-base mobile:text-sm text-primary">{subtitle}</div>}
+              {subtitle && (
+                <div className="font-normal text-base mobile:text-sm text-primary">
+                  {subtitle}
+                </div>
+              )}
               {description && (
-                <div className="font-medium text-sm mobile:text-xs text-primary opacity-50">{description}</div>
+                <div className="font-medium text-sm mobile:text-xs text-primary opacity-50">
+                  {description}
+                </div>
               )}
             </div>
           </Row>
@@ -160,7 +176,10 @@ export default function NotificationItem({ description, title, subtitle, type = 
   )
 }
 
-function spawnTimeoutControllers(options: { callback: () => void; totalDuration: number }) {
+function spawnTimeoutControllers(options: {
+  callback: () => void
+  totalDuration: number
+}) {
   let dead = false
   let startTimestamp: number
   let remainTime = options.totalDuration
@@ -170,19 +189,24 @@ function spawnTimeoutControllers(options: { callback: () => void; totalDuration:
     dead = true
   }
   function start() {
+    // eslint-disable-next-line no-undef
     startTimestamp = globalThis.performance.now()
     if (dead) return
+    // eslint-disable-next-line no-undef
     id = globalThis.setTimeout(timeFunction, remainTime)
   }
   function pause() {
+    // eslint-disable-next-line no-undef
     const endTimestamp = globalThis.performance.now()
     remainTime -= endTimestamp - startTimestamp
+    // eslint-disable-next-line no-undef
     globalThis.clearTimeout(id)
   }
   function resume() {
     start()
   }
   function cancel() {
+    // eslint-disable-next-line no-undef
     globalThis.clearTimeout(id)
     dead = true
   }
@@ -192,6 +216,6 @@ function spawnTimeoutControllers(options: { callback: () => void; totalDuration:
     start,
     pause,
     resume,
-    cancel
+    cancel,
   }
 }

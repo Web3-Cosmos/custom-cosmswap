@@ -6,20 +6,19 @@ export interface WalletIconProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
-export default function WalletIcon({
-  color,
-  size,
-}: WalletIconProps) {
-  const _size = size === 'xs'
-    ? 12
-    : size === 'sm'
-    ? 16
-    : size === 'md'
-    ? 20
-    : size === 'lg'
-    ? 24
-    : size === 'xl'
-    ? 32 : 12
+export default function WalletIcon({ color, size }: WalletIconProps) {
+  const _size =
+    size === 'xs'
+      ? 12
+      : size === 'sm'
+      ? 16
+      : size === 'md'
+      ? 20
+      : size === 'lg'
+      ? 24
+      : size === 'xl'
+      ? 32
+      : 12
 
   return (
     <svg

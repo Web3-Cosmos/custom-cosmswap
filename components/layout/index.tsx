@@ -1,20 +1,12 @@
 import { ReactNode, useEffect } from 'react'
-import {
-  Row,
-  Col,
-  Tabs,
-  Link,
-  Image,
-  WalletWidget,
-  Grid,
-} from '@/components'
+import { useRouter } from 'next/router'
+import { Row, Col, Tabs, Link, Image, WalletWidget, Grid } from '@/components'
 import { useSwap } from '@/hooks/application/swap/useSwap'
 
-export default function Layout(props: {
-  children?: ReactNode
-}) {
+export default function Layout(props: { children?: ReactNode }) {
+  const swapMode = useSwap((s) => s.swapMode)
 
-  const swapMode = useSwap(s => s.swapMode)
+  const router = useRouter()
 
   useEffect(() => {
     document?.documentElement.classList.remove('dark', 'light')
@@ -22,26 +14,32 @@ export default function Layout(props: {
   }, [])
 
   return (
-    <Col className="w-full min-h-screen bg-stack-1 justify-start items-center p-5">
+    <Col className="w-full min-h-screen bg-stack-1 justify-start items-center py-5">
       <Grid className="w-full grid-cols-3 justify-between items-center fixed inset-x-0 top-0 p-5 bg-stack-1 z-50 border-b border-stack-2">
         <Link href="/">
-          <Image className="cursor-pointer" src="/logo/logo-only-icon.svg" />
+          <Image
+            className="cursor-pointer"
+            src="/logo/logo-only-icon.svg"
+            alt="logo"
+          />
         </Link>
 
         <Row className="inline-flex justify-center">
           <Tabs
             currentValue={swapMode}
             values={['SWAP', 'LIMIT ORDER', 'STOP LOSS']}
-            onChange={(newTab) => useSwap.setState({ swapMode: newTab })}
+            onChange={(newTab) => {
+              if (newTab === 'SWAP') router.push('/')
+              else router.push(`/${newTab.replace(' ', '-').toLowerCase()}`)
+              useSwap.setState({ swapMode: newTab })
+            }}
           />
         </Row>
 
         <WalletWidget />
       </Grid>
 
-      <div className="mt-20">
-        {props.children}
-      </div>
+      <div className="mt-20">{props.children}</div>
     </Col>
   )
 }

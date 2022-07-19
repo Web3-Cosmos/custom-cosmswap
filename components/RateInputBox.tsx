@@ -5,24 +5,24 @@ import {
   CSSProperties,
   ReactNode,
 } from 'react'
-import {
-  Row,
-  CoinAvatar,
-  Icon,
-  Button,
-  Input,
-  Badge,
-} from '@/components'
 import { twMerge } from 'tailwind-merge'
+import { useRecoilValue } from 'recoil'
+import { Row, CoinAvatar, Icon, Button, Input, Badge } from '@/components'
+import { useTxRates } from '@/hooks/application/transaction/useTxRates'
+import { tokenSwapAtom } from '@/hooks/application/atoms/swapAtoms'
 import { isString } from '@/functions/judgers/dateType'
 
 export interface RateInputBoxProps {
   className?: string
   style?: CSSProperties
-  domRef?: RefObject<any>,
+  domRef?: RefObject<any>
   disabled?: boolean
   disabledInput?: boolean
   disabledTokenSelect?: boolean
+  price: number
+  isPriceLoading: boolean
+  rate: number
+  onPriceChange: (amount: number) => void
 }
 
 export default function RateInputBox({
@@ -32,25 +32,34 @@ export default function RateInputBox({
   disabled,
   disabledInput: innerDisabledInput,
   disabledTokenSelect: innerDisabledTokenSelect,
+  price,
+  isPriceLoading,
+  rate,
+  onPriceChange,
 }: RateInputBoxProps) {
-
-  const disabledInput = disabled || innerDisabledInput
-  const disabledTokenSelect = disabled || innerDisabledTokenSelect
-
   const inputRef = useRef<HTMLInputElement>(null)
 
   const isOutsideValueLocked = useRef(false)
 
+  const [tokenA, tokenB] = useRecoilValue(tokenSwapAtom)
+
+  const handlePrice = (val: string) => onPriceChange?.(+val)
+
   return (
     <Row
-      className={twMerge(`flex bg-stack-3 cursor-text rounded-xl py-3 px-3 mobile:px-4`, className)}
+      className={twMerge(
+        `flex bg-stack-3 cursor-text rounded-xl py-3 px-3 mobile:px-4`,
+        className
+      )}
       style={style}
-      htmlProps={{tabIndex: 0}}
+      htmlProps={{ tabIndex: 0 }}
     >
       <Row className="flex-col flex-1 pr-3">
         {/* rate */}
         <Row className="mb-2 mobile:mb-4 items-center px-2">
-          <div className="text-xs font-bold mobile:text-sm text-primary">Rate:</div>
+          <div className="text-xs font-bold mobile:text-sm text-primary">
+            Rate:
+          </div>
         </Row>
 
         <Row className="justify-between mb-2 mobile:mb-4 px-2 invisible">
@@ -73,30 +82,51 @@ export default function RateInputBox({
             type="number"
             // pattern={validPattern}
             componentRef={inputRef}
-            value="237"
-            // value={inputedAmount}
-            // onUserInput={setInputedAmount}
+            value={`${price}`}
+            onUserInput={handlePrice}
             onEnter={() => {}}
             inputClassName="text-left mobile:text-sm font-bold"
             inputHTMLProps={{
               onFocus: () => (isOutsideValueLocked.current = true),
-              onBlur: () => (isOutsideValueLocked.current = false)
+              onBlur: () => (isOutsideValueLocked.current = false),
             }}
           />
 
           <div className="text-primary opacity-50 text-sm font-medium">
-            BANANA
+            {tokenB.tokenSymbol}
           </div>
         </Row>
       </Row>
 
       <Row className="flex-1 flex-col ml-3 text-primary justify-center items-center bg-stack-4 rounded-xl py-2">
         <div className="pl-3">
-          <div className="text-xs text-center">When <span className="font-bold">BANANA</span> equals</div>
-          <div className="text-xs text-center"><span className="text-default">0.02</span><span className="text-primary font-bold">{' '}BNR,</span></div>
-          <div className="text-xs text-center"><span className="text-default">2000</span><span className="text-primary font-bold">{' '}BANANA,</span></div>
+          <div className="text-xs text-center">
+            When <span className="font-bold">{tokenA.tokenSymbol}</span> equals
+          </div>
+          <div className="text-xs text-center">
+            <span className="text-default">{price}</span>
+            <span className="text-primary font-bold">
+              {' '}
+              {tokenB.tokenSymbol},
+            </span>
+          </div>
+          <div className="text-xs text-center">
+            <span className="text-default">{tokenA.amount}</span>
+            <span className="text-primary font-bold">
+              {' '}
+              {tokenA.tokenSymbol},
+            </span>
+          </div>
           <div className="text-xs text-center">will be swapped for</div>
-          <div className="text-xs text-center"><span className="text-default">500</span><span className="text-primary font-bold">{' '}BANANA</span></div>
+          <div className="text-xs text-center">
+            <span className="text-default">
+              {(price * tokenA.amount).toFixed(7)}
+            </span>
+            <span className="text-primary font-bold">
+              {' '}
+              {tokenB.tokenSymbol}
+            </span>
+          </div>
         </div>
       </Row>
     </Row>

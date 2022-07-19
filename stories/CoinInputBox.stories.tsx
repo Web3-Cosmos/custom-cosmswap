@@ -29,6 +29,5 @@ export const Primary = Template.bind({})
 
 Primary.args = {
   topLeftLabel: 'Swap:',
-  canSelect: true,
   haveHalfButton: true,
 }

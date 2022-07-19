@@ -1,0 +1,63 @@
+{
+  "name": "Pools list on testnet",
+  "logoURI": "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/29231450/Poodle-Standard-Gray-On-White-Standing.jpg",
+  "keywords": ["special tokens"],
+  "tags": {
+    "ProjectName": {
+      "name": "Project",
+      "description": "Tokens that are listed on Project"
+    }
+  },
+  "timestamp": "2021-06-12T00:00:00+00:00",
+  "base_token": {
+    "id": "juno-network",
+    "chain_id": "uni-3",
+    "token_address": "",
+    "symbol": "JUNOX",
+    "name": "Junox",
+    "decimals": 6,
+    "logoURI": "https://cryptologos.cc/logos/anyswap-any-logo.svg?v=022",
+    "tags": ["native"],
+    "native": true,
+    "denom": "ujunox"
+  },
+  "pools": [
+    {
+      "pool_id": "JUNO-TCW",
+      "pool_assets": [
+        {
+          "id": "juno-network",
+          "chain_id": "uni-3",
+          "token_address": "",
+          "symbol": "JUNOX",
+          "name": "Junox",
+          "decimals": 6,
+          "logoURI": "https://cryptologos.cc/logos/anyswap-any-logo.svg?v=022",
+          "tags": ["native"],
+          "native": true,
+          "denom": "ujunox"
+        },
+        {
+          "id": "juno-network",
+          "chain_id": "uni-3",
+          "token_address": "juno132twgl4fud7kv6xq5ztma4f8zdfh5mqsf7rjp2zs03j5kmhpk74qhgqddh",
+          "symbol": "TCW",
+          "name": "Tcw",
+          "decimals": 6,
+          "logoURI": "https://cryptologos.cc/logos/irisnet-iris-logo.svg?v=022",
+          "tags": ["memecoin"],
+          "native": false,
+          "denom": "utcw"
+        }
+      ],
+      "swap_address": "juno1y6ymzsmntrurapq72uefnxy88vaj6yztrjpgdz768xhz7reazq5sl9ch7m",
+      "staking_address": "juno1y6ymzsmntrurapq72uefnxy88vaj6yztrjpgdz768xhz7reazq5sl9ch7m",
+      "rewards_tokens": []
+    }
+  ],
+  "version": {
+    "major": 0,
+    "minor": 1,
+    "patch": 0
+  }
+}

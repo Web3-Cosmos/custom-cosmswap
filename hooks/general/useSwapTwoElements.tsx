@@ -6,9 +6,14 @@ export function useSwapTwoElements(
   swap1: RefObject<HTMLDivElement | null>,
   swap2: RefObject<HTMLDivElement | null>,
   options?: { defaultHasWrapped?: boolean }
-): [hasWrapped: boolean, controller: { toggleSwap: () => void; resetSwapPosition(): void }] {
+): [
+  hasWrapped: boolean,
+  controller: { toggleSwap: () => void; resetSwapPosition(): void }
+] {
   const transitionValue = 'all .4s cubic-bezier(0.4, 0, 0.2, 1)'
-  const [hasSwrapped, setHasWrapped] = useState(options?.defaultHasWrapped ?? false)
+  const [hasSwapped, setHasWrapped] = useState(
+    options?.defaultHasWrapped ?? false
+  )
 
   function applyDefault() {
     if (inServer) return
@@ -23,8 +28,14 @@ export function useSwapTwoElements(
 
     dom1.style.setProperty('transition', '')
     dom2.style.setProperty('transition', '')
-    dom1.style.setProperty('transform', `translateY(${distance * dom1IsAboveDom2}px)`)
-    dom2.style.setProperty('transform', `translateY(${-distance * dom1IsAboveDom2}px)`)
+    dom1.style.setProperty(
+      'transform',
+      `translateY(${distance * dom1IsAboveDom2}px)`
+    )
+    dom2.style.setProperty(
+      'transform',
+      `translateY(${-distance * dom1IsAboveDom2}px)`
+    )
   }
   useEffect(applyDefault, [])
 
@@ -40,16 +51,22 @@ export function useSwapTwoElements(
     const dom1IsAboveDom2 = dom1Rect.top < dom2Rect.top ? 1 : -1
     dom1.style.setProperty('transition', transitionValue)
     dom2.style.setProperty('transition', transitionValue)
-    if (hasSwrapped) {
+    if (hasSwapped) {
       dom1.style.setProperty('transform', `translateY(0px)`)
       dom2.style.setProperty('transform', `translateY(0px)`)
       setHasWrapped(false)
     } else {
-      dom1.style.setProperty('transform', `translateY(${distance * dom1IsAboveDom2}px)`)
-      dom2.style.setProperty('transform', `translateY(${-distance * dom1IsAboveDom2}px)`)
+      dom1.style.setProperty(
+        'transform',
+        `translateY(${distance * dom1IsAboveDom2}px)`
+      )
+      dom2.style.setProperty(
+        'transform',
+        `translateY(${-distance * dom1IsAboveDom2}px)`
+      )
       setHasWrapped(true)
     }
-  }, [hasSwrapped, swap1, swap2])
+  }, [hasSwapped, swap1, swap2])
 
   const resetSwapPosition = useCallback(() => {
     const dom1 = swap1.current
@@ -59,7 +76,7 @@ export function useSwapTwoElements(
     dom2.style.setProperty('transition', transitionValue)
     dom1.style.setProperty('transform', `translateY(0px)`)
     dom2.style.setProperty('transform', `translateY(0px)`)
-  }, [hasSwrapped, swap1, swap2])
+  }, [hasSwapped, swap1, swap2])
 
   useEffect(() => {
     const dom1 = swap1.current
@@ -78,5 +95,5 @@ export function useSwapTwoElements(
     })
   }, [swap1, swap2])
 
-  return [hasSwrapped, { toggleSwap, resetSwapPosition }]
+  return [hasSwapped, { toggleSwap, resetSwapPosition }]
 }

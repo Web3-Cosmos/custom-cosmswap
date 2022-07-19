@@ -2,14 +2,18 @@ let cachedCanvas: HTMLCanvasElement | null = null
 
 const resultCache = new Map<string, boolean>()
 
-export default async function hasOpacityPx(imgSrc: string | undefined): Promise<boolean> {
+export default async function hasOpacityPx(
+  imgSrc: string | undefined
+): Promise<boolean> {
   if (!imgSrc) return false
   if (resultCache.has(imgSrc)) return resultCache.get(imgSrc)!
+  // eslint-disable-next-line no-undef
   if (!('document' in globalThis)) return false
 
   //#region ------------------- get canvas context -------------------
   let inMemoryCanvas: HTMLCanvasElement
   if (!cachedCanvas) {
+    // eslint-disable-next-line no-undef
     const canvas = globalThis.document.createElement('canvas')
     inMemoryCanvas = canvas
     cachedCanvas = canvas
@@ -20,6 +24,7 @@ export default async function hasOpacityPx(imgSrc: string | undefined): Promise<
   if (!ctx) return false
   //#endregion
 
+  // eslint-disable-next-line no-undef
   const img = globalThis.document.createElement('img')
   img.src = imgSrc
   img.setAttribute('crossOrigin', '')
@@ -48,7 +53,7 @@ export default async function hasOpacityPx(imgSrc: string | undefined): Promise<
           // [2, 4],
 
           // 1 center
-          [2, 2]
+          [2, 2],
         ]
 
         for (const [x, y] of allPointsCoors) {

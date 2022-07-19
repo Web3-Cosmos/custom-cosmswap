@@ -11,10 +11,12 @@ import { useLocalStorageItem } from '@/hooks/general/useLocalStorage'
 import { useRecordedEffect } from '@/hooks/general/useRecordedEffect'
 
 export function useThemeModeSync() {
-  const themeMode = useAppSettings(s => s.themeMode)
+  const themeMode = useAppSettings((s) => s.themeMode)
 
   useEffect(() => {
+    // eslint-disable-next-line no-undef
     globalThis.document?.documentElement.classList.remove('dark', 'light')
+    // eslint-disable-next-line no-undef
     globalThis.document?.documentElement.classList.add(themeMode)
   }, [themeMode])
 }
@@ -22,23 +24,31 @@ export function useThemeModeSync() {
 export function useDeviceInfoSync() {
   const { isMobile, isPc, isTablet } = useDevice()
   useIsomorphicLayoutEffect(() => {
-    useAppSettings.setState({ isMobile, isTablet, isPc})
+    useAppSettings.setState({ isMobile, isTablet, isPc })
   }, [isMobile, isTablet, isPc])
 }
 
 export function useWelcomeDialog(options?: { force?: boolean }) {
-  const [haveReadWelcomeDialog, setHaveReadWelcomeDialog] = useLocalStorageItem<boolean>('HAVE_READ_WELCOME_DIALOG')
+  const [haveReadWelcomeDialog, setHaveReadWelcomeDialog] =
+    useLocalStorageItem<boolean>('HAVE_READ_WELCOME_DIALOG')
   const { pathname } = useRouter()
 
-  useRecordedEffect(([prevPathname]) => {
-    if (haveReadWelcomeDialog) return
+  useRecordedEffect(
+    ([prevPathname]) => {
+      if (haveReadWelcomeDialog) return
 
-    if (!haveReadWelcomeDialog && (prevPathname === '/' || !prevPathname) && pathname !== '/') {
-      setTimeout(() => {
-        // popWelcomeDialogFn({ onConfirm: () => setHaveReadWelcomDialog(true) })
-      }, 700) // TODO: when done callback delay invoke, don't need setTimeout any more
-    }
-  }, [pathname])
+      if (
+        !haveReadWelcomeDialog &&
+        (prevPathname === '/' || !prevPathname) &&
+        pathname !== '/'
+      ) {
+        setTimeout(() => {
+          // popWelcomeDialogFn({ onConfirm: () => setHaveReadWelcomDialog(true) })
+        }, 700) // TODO: when done callback delay invoke, don't need setTimeout any more
+      }
+    },
+    [pathname]
+  )
 }
 
 export function popupWelcomeDialogFn(cb?: { onConfirm: () => void }) {
@@ -48,19 +58,25 @@ export function popupWelcomeDialogFn(cb?: { onConfirm: () => void }) {
         Welcome to Autonomy Cosm Swap
       </div>
       <div className="text-[#c4d6ff] mb-4">
-        Autonomy Cosm Swap is built for a faster, more streamlined experience. However, it is{' '}
-        <span className="text-[#39D0D8] font-bold">still under development</span>.
+        Autonomy Cosm Swap is built for a faster, more streamlined experience.
+        However, it is{' '}
+        <span className="text-[#39D0D8] font-bold">
+          still under development
+        </span>
+        .
       </div>
       <div className="text-[#C4D6FF] mb-4 ">
-        You can still use <Link href="https://v1.raydium.io/swap">V1</Link> for full features.
+        You can still use <Link href="https://v1.raydium.io/swap">V1</Link> for
+        full features.
       </div>
       <div className="text-[#C4D6FF] mb-4 ">
-        Help Autonomy improve by reporting bugs <Link href="https://forms.gle/DvUS4YknduBgu2D7A">here</Link>, or in{' '}
+        Help Autonomy improve by reporting bugs{' '}
+        <Link href="https://forms.gle/DvUS4YknduBgu2D7A">here</Link>, or in{' '}
         <Link href="https://discord.gg/raydium">Discord.</Link>
       </div>
     </div>,
     {
-      onConfirm: () => cb?.onConfirm?.()
+      onConfirm: () => cb?.onConfirm?.(),
     }
   )
 }

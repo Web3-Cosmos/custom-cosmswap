@@ -32,11 +32,17 @@ export default function Notification() {
   const isMobile = useAppSettings((s) => s.isMobile)
 
   const notificationItemInfos = useMemo(
-    () => stack.filter((i) => i.is === 'notificationItem').map((i) => i.info) as NotificationItemInfo[],
+    () =>
+      stack
+        .filter((i) => i.is === 'notificationItem')
+        .map((i) => i.info) as NotificationItemInfo[],
     [stack]
   )
   const confirmDialogInfos = useMemo(
-    () => stack.filter((i) => i.is === 'confirmDialog').map((i) => i.info) as ConfirmDialogInfo[],
+    () =>
+      stack
+        .filter((i) => i.is === 'confirmDialog')
+        .map((i) => i.info) as ConfirmDialogInfo[],
     [stack]
   )
   const popDialogInfos = useMemo(
@@ -51,7 +57,7 @@ export default function Notification() {
     const log = (info: NotificationItemInfo) => {
       setStack((s) => s.concat({ is: 'notificationItem', info }))
     }
-    const popupConfirm = (info: ConfirmDialogInfo) => {
+    const popConfirm = (info: ConfirmDialogInfo) => {
       setStack((s) => s.concat({ is: 'confirmDialog', info }))
     }
 
@@ -63,14 +69,21 @@ export default function Notification() {
           title: title ?? 'Transaction sent',
           description: (
             <div>
-              View on <Link href={`https://solscan.io/tx/${txid}`}>Solscan</Link>
+              View on{' '}
+              <Link href={`https://solscan.io/tx/${txid}`}>Solscan</Link>
             </div>
-          )
+          ),
         })
       },
       logError(title: string | Error | unknown, description?: ReactNode) {
-        const errorTitle = title instanceof Error ? title.name : title ? String(title) : ''
-        const errorDescription = title instanceof Error ? title.message : description ? String(description) : undefined
+        const errorTitle =
+          title instanceof Error ? title.name : title ? String(title) : ''
+        const errorDescription =
+          title instanceof Error
+            ? title.message
+            : description
+            ? String(description)
+            : undefined
         log({ type: 'error', title: errorTitle, description: errorDescription })
       },
       logWarning(title: string, description?: ReactNode) {
@@ -82,10 +95,15 @@ export default function Notification() {
       logInfo(title: string, description?: ReactNode) {
         log({ type: 'info', title, description })
       },
-      popupConfirm,
-      popupWelcomeDialog(content, { onConfirm }: { onConfirm?: () => void } = {}) {
-        setStack((s) => s.concat({ is: 'welcomeDialog', info: { content, onConfirm } }))
-      }
+      popConfirm,
+      popupWelcomeDialog(
+        content,
+        { onConfirm }: { onConfirm?: () => void } = {}
+      ) {
+        setStack((s) =>
+          s.concat({ is: 'welcomeDialog', info: { content, onConfirm } })
+        )
+      },
     })
   }, [])
 
@@ -99,7 +117,7 @@ export default function Notification() {
           bottom: isMobile ? 'unset' : '0',
           top: isMobile ? '0' : 'unset',
           left: isMobile ? '0' : 'unset',
-          zIndex: 9999
+          zIndex: 9999,
         }}
       >
         {notificationItemInfos.map((info, idx) => (
@@ -110,7 +128,11 @@ export default function Notification() {
         <ConfirmDialog key={idx} {...info} />
       ))}
       {popDialogInfos.map((info, idx) => (
-        <WelcomeBetaDialog key={idx} content={info.content} onConfirm={info.onConfirm} />
+        <WelcomeBetaDialog
+          key={idx}
+          content={info.content}
+          onConfirm={info.onConfirm}
+        />
       ))}
     </>
   )

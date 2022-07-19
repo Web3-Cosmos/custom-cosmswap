@@ -1,42 +1,32 @@
 import '../styles/globals.css'
-
 import type { AppProps } from 'next/app'
-import { useCallback } from 'react'
 import { useRouter } from 'next/router'
+
 import NextNProgress from 'nextjs-progressbar'
-import { Web3Provider } from '@ethersproject/providers'
-import { Web3ReactProvider } from '@web3-react/core'
+
+import { RecoilRoot } from 'recoil'
+import { QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+import { queryClient } from '@/services/queryClient'
+
+import { WalletSelectDialog, Notification } from '@/components'
 
 import {
-  WalletSelectDialog,
-  Notification,
-} from '@/components'
-
-import { useThemeModeSync, useDeviceInfoSync } from '@/hooks/application/appSettings/initializationHooks'
-import { useTokenLists } from '@/hooks/application/token/useTokenLists'
-import { useWalletConfig } from '@/hooks/application/wallet/useWalletConfig'
-
-// const Web3ProviderNetwork = typeof window !== "undefined" ? createWeb3ReactRoot('NETWORK') : null
-
-export function getLibrary(provider: any): Web3Provider {
-  const library = new Web3Provider(provider)
-  library.pollingInterval = 15000
-  return library
-}
+  useThemeModeSync,
+  useDeviceInfoSync,
+} from '@/hooks/application/appSettings/initializationHooks'
 
 function MyApp({ Component, pageProps }: AppProps) {
-
   const { pathname } = useRouter()
 
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <div>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
         {/* initialization hooks */}
         <ClientInitialization />
-        {/* {pathname !== '/' && <ApplicationInitialization />} */}
-        <ApplicationInitialization />
+        {pathname !== '/' && <ApplicationInitialization />}
 
-        <NextNProgress  />
+        <NextNProgress />
 
         {/* page components */}
         <Component {...pageProps} />
@@ -44,8 +34,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         {/* global components */}
         <WalletSelectDialog />
         <Notification />
-      </div>
-    </Web3ReactProvider>
+      </QueryClientProvider>
+    </RecoilRoot>
   )
 }
 
@@ -56,8 +46,6 @@ function ClientInitialization() {
 }
 
 function ApplicationInitialization() {
-  useTokenLists()
-  useWalletConfig()
   return null
 }
 

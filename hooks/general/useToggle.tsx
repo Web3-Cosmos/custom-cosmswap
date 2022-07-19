@@ -39,8 +39,10 @@ export function useToggle(
     onToggle?(): void
   } = {}
 ): UseToggleReturn {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const opts = { ...{ delay: 800 }, ...options }
   const [isOn, _setIsOn] = useState(initValue)
+  // eslint-disable-next-line no-undef
   const [delayActionId, setDelayActionId] = useState<number | NodeJS.Timeout>(0)
   const setIsOn = (...params: any[]) => {
     //@ts-expect-error temp
@@ -48,18 +50,19 @@ export function useToggle(
   }
   const cancelDelayAction = useCallback(() => {
     // @ts-expect-error clearTimeout is not type-safe between browser and nodejs
+    // eslint-disable-next-line no-undef
     globalThis.clearTimeout(delayActionId)
   }, [delayActionId])
   const on = useCallback(() => {
     cancelDelayAction()
     setIsOn(true)
     opts.onOn?.()
-  }, [cancelDelayAction])
+  }, [cancelDelayAction, opts])
   const off = useCallback(() => {
     cancelDelayAction()
     setIsOn(false)
     opts.onOff?.()
-  }, [cancelDelayAction])
+  }, [cancelDelayAction, opts])
   const toggle = useCallback(() => {
     cancelDelayAction()
     setIsOn((b: any) => {
@@ -68,28 +71,32 @@ export function useToggle(
       return !b
     })
     opts.onToggle?.()
-  }, [cancelDelayAction])
+  }, [cancelDelayAction, opts])
 
   const delayOn = useCallback(() => {
     cancelDelayAction()
+    // eslint-disable-next-line no-undef
     const actionId = globalThis.setTimeout(on, opts.delay)
     setDelayActionId(actionId)
-  }, [cancelDelayAction])
+  }, [cancelDelayAction, on, opts.delay])
   const delayOff = useCallback(() => {
     cancelDelayAction()
+    // eslint-disable-next-line no-undef
     const actionId = globalThis.setTimeout(off, opts.delay)
     setDelayActionId(actionId)
-  }, [cancelDelayAction])
+  }, [cancelDelayAction, off, opts.delay])
   const delayToggle = useCallback(() => {
     cancelDelayAction()
+    // eslint-disable-next-line no-undef
     const actionId = globalThis.setTimeout(toggle, opts.delay)
     setDelayActionId(actionId)
-  }, [cancelDelayAction])
+  }, [cancelDelayAction, opts.delay, toggle])
   const delaySet = useCallback(() => {
     cancelDelayAction()
+    // eslint-disable-next-line no-undef
     const actionId = globalThis.setTimeout(setIsOn, opts.delay)
     setDelayActionId(actionId)
-  }, [cancelDelayAction])
+  }, [cancelDelayAction, opts.delay])
 
   const controller = useMemo(
     () => ({
@@ -102,18 +109,29 @@ export function useToggle(
       on,
       off,
       toggle,
-      set: setIsOn
+      set: setIsOn,
     }),
-    [off, on, toggle, setIsOn]
+    [
+      cancelDelayAction,
+      delayOn,
+      delayOff,
+      delayToggle,
+      delaySet,
+      on,
+      off,
+      toggle,
+    ]
   )
   return [isOn, controller]
 }
 
-export function createToggleController<T extends Dispatch<SetStateAction<any>>>(setState: T) {
+export function createToggleController<T extends Dispatch<SetStateAction<any>>>(
+  setState: T
+) {
   return {
     on: () => setState(true),
     off: () => setState(false),
     toggle: () => setState((b: any) => !b),
-    set: (newState: any) => setState(newState)
+    set: (newState: any) => setState(newState),
   }
 }

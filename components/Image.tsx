@@ -1,4 +1,10 @@
-import React, { CSSProperties, RefObject, useEffect, useRef, useState } from 'react'
+import React, {
+  CSSProperties,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import { useClick } from '@/hooks/general/useClick'
 
@@ -28,7 +34,7 @@ export default function Image({
   onClick,
   domRef,
   className,
-  style
+  style,
 }: ImageProps) {
   const ref = useRef<HTMLImageElement>(null)
   useClick(ref, { onClick })
@@ -48,6 +54,7 @@ export default function Image({
     })
   }, [])
   return (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       ref={mergeRef(domRef, ref)}
       className={`Image ${className ?? ''}`}

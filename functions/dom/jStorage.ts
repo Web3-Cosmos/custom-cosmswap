@@ -10,11 +10,17 @@ const cache: Map<string, any> = new Map()
 /**
  * auto JSON.parsed
  */
-export function getLocalItem<T = any>(key: string, jsonReviver?: (key: string, value: any) => any): T | undefined {
+export function getLocalItem<T = any>(
+  key: string,
+  jsonReviver?: (key: string, value: any) => any
+): T | undefined {
   try {
     if (cache.has(key)) return cache.get(key)
+    // eslint-disable-next-line no-undef
     const value = globalThis.localStorage?.getItem(key)
-    const parsedValue = isString(value) ? JSON.parse(value, jsonReviver) : value ?? undefined
+    const parsedValue = isString(value)
+      ? JSON.parse(value, jsonReviver)
+      : value ?? undefined
     cache.set(key, parsedValue)
     return parsedValue
   } catch {
@@ -34,6 +40,7 @@ export function setLocalItem<T = any>(
     const oldValue = getLocalItem(key)
     const targetValue = shrinkToValue(value, [oldValue])
     const jsonedValue = JSON.stringify(targetValue, jsonReplacer)
+    // eslint-disable-next-line no-undef
     globalThis.localStorage?.setItem(key, jsonedValue)
     cache.set(key, targetValue)
   } catch {
