@@ -1,7 +1,9 @@
 import React from 'react'
 import { Story, ComponentMeta } from '@storybook/react'
 
-import RequestHistory, { RequestHistoryProps } from '@/components/RequestHistory'
+import RequestHistory, {
+  RequestHistoryProps,
+} from '@/components/TransactionHistory'
 
 export default {
   title: 'Components/RequestHistory',

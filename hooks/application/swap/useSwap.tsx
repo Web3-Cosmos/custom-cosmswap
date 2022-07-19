@@ -15,7 +15,7 @@ export type SwapStore = {
   // coin2?: SplToken
   // coin1Amount?: Numberish // may with fee and slippage
   // coin2Amount?: Numberish // may with fee and slippage
-  hasUISwrapped?: boolean // if user swap coin1 and coin2, this will be true
+  hasUISwapped?: boolean // if user swap coin1 and coin2, this will be true
   rate?: Numberish // if limit or stop
   swapMode: SwapMode
 
@@ -59,7 +59,7 @@ export const useSwap = create<SwapStore>((set, get) => ({
   refreshCount: 0,
   refreshSwap: () => {
     set((s) => ({
-      refreshCount: s.refreshCount + 1
+      refreshCount: s.refreshCount + 1,
     }))
-  }
+  },
 }))

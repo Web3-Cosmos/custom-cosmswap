@@ -16,8 +16,13 @@ import {
 } from '@/components'
 import { useToggle } from '@/hooks/general/useToggle'
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
+import { TokenInfo } from '@/hooks/application/chain-pool/usePoolsListQuery'
+import { useTokenBalance } from '@/hooks/application/token/useTokenBalance'
+import { formatTokenBalance } from '@/util/conversion'
 
-export default function TokenSelectorDialog(props: Parameters<typeof TokenSelectorDialogContent>[0]) {
+export default function TokenSelectorDialog(
+  props: Parameters<typeof TokenSelectorDialogContent>[0]
+) {
   return (
     <ResponsiveDialogDrawer
       maskNoBlur
@@ -26,23 +31,30 @@ export default function TokenSelectorDialog(props: Parameters<typeof TokenSelect
       open={props.open}
       onClose={props.close}
     >
-      {({ close: closePanel }) => <TokenSelectorDialogContent {...props} close={closePanel} />}
+      {({ close: closePanel }) => (
+        <TokenSelectorDialogContent {...props} close={closePanel} />
+      )}
     </ResponsiveDialogDrawer>
   )
+}
+
+function isQueryEmpty(query: string) {
+  return !query || !query.replace(new RegExp(' ', 'g'), '')
 }
 
 function TokenSelectorDialogContent({
   open,
   close: closePanel,
-  onSelectCoin
+  tokens,
+  onSelectToken,
 }: {
   open: boolean
   close: () => void
-  onSelectCoin?: () => unknown
+  tokens: Array<TokenInfo>
+  onSelectToken?: (symbol: string) => unknown
 }) {
-  
   const isMobile = useAppSettings((s) => s.isMobile)
-  
+
   const [searchText, setSearchText] = useState('')
 
   // used for if panel is not tokenList but tokenlistList
@@ -51,33 +63,47 @@ function TokenSelectorDialogContent({
   const closeAndClean = useCallback(() => {
     setSearchText('')
     closePanel?.()
-  }, [])
+  }, [closePanel])
 
   // some keyboard (arrow up/down / mouse hover) will change the selected index
-  const [selectedTokenIdx, setSelectedTokenIdx] = useState(0)
+  const [selectedTokenSymbol, setSelectedTokenSymbol] = useState<string>('')
 
-  const userCustomizedTokenSymbol = useRef('')
+  const filteredTokenList = useMemo(() => {
+    if (!tokens || isQueryEmpty(searchText)) {
+      return tokens
+    }
+
+    const lowerCasedQueryFilter = searchText.toLowerCase()
+    return tokens
+      .filter(({ symbol, name }) => {
+        return (
+          symbol.toLowerCase().search(lowerCasedQueryFilter) >= 0 ||
+          name.toLowerCase().search(lowerCasedQueryFilter) >= 0
+        )
+      })
+      .sort((tokenA, tokenB) => {
+        if (
+          tokenA.symbol.toLowerCase().startsWith(lowerCasedQueryFilter) ||
+          tokenA.name.toLowerCase().startsWith(lowerCasedQueryFilter)
+        ) {
+          return -1
+        }
+        if (
+          tokenB.symbol.toLowerCase().startsWith(lowerCasedQueryFilter) ||
+          tokenB.name.toLowerCase().startsWith(lowerCasedQueryFilter)
+        ) {
+          return 1
+        }
+        return 0
+      })
+  }, [tokens, searchText])
 
   return (
     <Card
       className="flex flex-col shadow-xl rounded-3xl mobile:rounded-none w-[min(468px,100vw)] mobile:w-full h-[min(680px,100vh)] mobile:h-screen border border-stack-4 bg-stack-2"
       size="lg"
       style={{
-        boxShadow: '0px 0px 48px rgba(171, 196, 255, 0.24)'
-      }}
-      htmlProps={{
-        onKeyDown: (e) => {
-          if (e.key === 'ArrowUp') {
-            setSelectedTokenIdx((s) => Math.max(s - 1, 0))
-          } else if (e.key === 'ArrowDown') {
-            setSelectedTokenIdx((s) => Math.min(s + 1, 10))
-          } else if (e.key === 'Enter') {
-            // onSelectCoin?.(searchedTokens[selectedTokenIdx])
-            setTimeout(() => {
-              closeAndClean()
-            }, 200) // delay: give user some time to reflect the change
-          }
-        }
+        boxShadow: '0px 0px 48px rgba(171, 196, 255, 0.24)',
       }}
     >
       {currentTabIsTokenList ? (
@@ -88,7 +114,9 @@ function TokenSelectorDialogContent({
               heroIconName="chevron-left"
               onClick={off}
             />
-            <div className="text-xl font-semibold text-primary">Token List Settings</div>
+            <div className="text-xl font-semibold text-primary">
+              Token List Settings
+            </div>
             <Icon
               className="text-primary cursor-pointer clickable clickable-mask-offset-2"
               heroIconName="x"
@@ -107,7 +135,9 @@ function TokenSelectorDialogContent({
         <>
           <div className="px-8 mobile:px-6 pt-6 pb-5">
             <Row className="justify-between items-center mb-6">
-              <div className="text-xl font-semibold text-primary">Select a token</div>
+              <div className="text-xl font-semibold text-primary">
+                Select a token
+              </div>
               <Icon
                 className="text-primary cursor-pointer clickable clickable-mask-offset-2"
                 heroIconName="x"
@@ -118,20 +148,25 @@ function TokenSelectorDialogContent({
             <Input
               value={searchText}
               placeholder="Search name or address"
-              onUserInput={(text) => {
-                setSearchText(text)
-                setSelectedTokenIdx(0)
-              }}
+              onUserInput={(text) => setSearchText(text)}
               className="py-3 px-4 rounded-lg bg-stack-4"
               inputClassName="placeholder-[#7a7a7a] text-sm text-disabled"
               labelText="input for searching coins"
-              suffix={<Icon heroIconName="search" size="sm" className="text-disabled" />}
+              suffix={
+                <Icon
+                  heroIconName="search"
+                  size="sm"
+                  className="text-disabled"
+                />
+              }
             />
 
-            <div className="text-xs font-medium text-secondary my-3">Popular tokens</div>
+            <div className="text-xs font-medium text-secondary my-3">
+              Popular tokens
+            </div>
 
             <Row type="grid" className="grid-cols-4 gap-x-3 gap-y-1">
-              {([...Array(4).keys()].map((index) => {
+              {[...Array(4).keys()].map((index) => {
                 return (
                   <Row
                     key={`row_${index}`}
@@ -141,10 +176,12 @@ function TokenSelectorDialogContent({
                     }}
                   >
                     <CoinAvatar size="lg" src="/coins/solarmy.png" />
-                    <div className="text-base sm:text-sm font-normal text-secondary">{'BNB' ?? '--'}</div>
+                    <div className="text-base sm:text-sm font-normal text-secondary">
+                      {'BNB' ?? '--'}
+                    </div>
                   </Row>
                 )
-              }))}
+              })}
             </Row>
           </div>
 
@@ -153,31 +190,34 @@ function TokenSelectorDialogContent({
           <Col className="flex-1 overflow-hidden border-b-[1.5px] py-3 border-stack-4">
             <Row className="px-8 mobile:px-6 justify-between">
               <div className="text-xs font-medium text-secondary">Token</div>
-              <Row className="text-xs font-medium text-secondary items-center gap-1">Balance</Row>
+              <Row className="text-xs font-medium text-secondary items-center gap-1">
+                Balance
+              </Row>
             </Row>
             <ListFast
               className="flex-grow flex flex-col px-4 mobile:px-2 mx-2 gap-2 overflow-auto my-2"
-              sourceData={[...Array(10).keys()]}
-              getKey={(index) => index}
-              renderItem={(token, idx) => (
+              sourceData={filteredTokenList}
+              getKey={(filteredToken) => filteredToken.symbol}
+              renderItem={(filteredToken) => (
                 <div>
                   <Row
                     className={`${
-                      selectedTokenIdx === idx
+                      selectedTokenSymbol === filteredToken.symbol
                         ? 'clickable no-clickable-transform-effect clickable-mask-offset-2'
                         : ''
                     }`}
                     onHoverChange={({ is: hoverStatus }) => {
                       if (hoverStatus === 'start') {
-                        setSelectedTokenIdx(idx)
+                        setSelectedTokenSymbol(filteredToken.symbol)
                       }
                     }}
                   >
                     <TokenSelectorDialogTokenItem
                       onClick={() => {
+                        onSelectToken?.(filteredToken.symbol)
                         closeAndClean()
                       }}
-                      token={token}
+                      token={filteredToken}
                     />
                   </Row>
                 </div>
@@ -185,7 +225,11 @@ function TokenSelectorDialogContent({
             />
           </Col>
 
-          <Button type="text" className="w-full py-3 rounded-none font-bold text-sm text-default" onClick={on}>
+          <Button
+            type="text"
+            className="w-full py-3 rounded-none font-bold text-sm text-default"
+            onClick={on}
+          >
             View Token List
           </Button>
         </>
@@ -194,32 +238,64 @@ function TokenSelectorDialogContent({
   )
 }
 
-function TokenSelectorDialogTokenItem({ token, onClick }: { token: number; onClick?(): void }) {
+const FetchBalanceTextForNativeTokenSymbol = (tokenSymbol: string) => {
+  const { balance, isLoading } = useTokenBalance(tokenSymbol)
+  return <>{isLoading ? <>{balance}</> : <>{balance}</>}</>
+}
+
+function TokenSelectorDialogTokenItem({
+  token,
+  onClick,
+}: {
+  token: TokenInfo
+  onClick?(): void
+}) {
   return (
-    <Row onClick={onClick} className="group w-full gap-4 justify-between items-center p-2 ">
+    <Row
+      onClick={onClick}
+      className="group w-full gap-4 justify-between items-center p-2 "
+    >
       <Row>
-        <CoinAvatar className="mr-4" />
+        <CoinAvatar size="lg" className="mr-4" src={token.logoURI} />
         <Col className="mr-2">
-          <div className="text-base font-medium text-primary">BANANA</div>
-          <div className="text-xs font-semibold text-secondary">BANANA</div>
+          <div className="text-base font-medium text-primary">
+            {token.symbol}
+          </div>
+          <div className="text-xs font-semibold text-secondary">
+            {token.name}
+          </div>
         </Col>
       </Row>
-      <div className="text-sm text-primary justify-self-end">123</div>
+      <div className="text-sm text-primary justify-self-end">
+        {FetchBalanceTextForNativeTokenSymbol(token.symbol)}
+      </div>
     </Row>
   )
 }
 
-function TokenSelectorDialogTokenListItem({ tokenListName }: { tokenListName: number }) {  
+function TokenSelectorDialogTokenListItem({
+  tokenListName,
+}: {
+  tokenListName: number
+}) {
   return (
     <Row className="my-4 items-center">
       <CoinAvatar className="mr-4" src="/coins/solarmy.png" />
 
       <Col>
-        <div className="text-base font-medium text-primary">{tokenListName}</div>
-        <div className="text-xs font-semibold text-secondary">Ethereum Mainnet</div>
+        <div className="text-base font-medium text-primary">
+          {tokenListName}
+        </div>
+        <div className="text-xs font-semibold text-secondary">
+          Ethereum Mainnet
+        </div>
       </Col>
 
-      <Switch className="ml-auto" defaultChecked disabled={Math.random() > .5 ? true : false} />
+      <Switch
+        className="ml-auto"
+        defaultChecked
+        disabled={Math.random() > 0.5 ? true : false}
+      />
     </Row>
   )
 }
