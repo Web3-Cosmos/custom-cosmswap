@@ -61,12 +61,12 @@ export default function ConfirmDialog(
     props.onConfirm?.()
     hasConfirmed.current = true
     _close()
-  }, [_close])
+  }, [_close, props])
 
   const close = useCallback(() => {
     _close()
     if (!hasConfirmed.current) props.onCancel?.()
-  }, [_close])
+  }, [_close, props])
 
   return (
     <Dialog open={isOpen} onClose={close}>
