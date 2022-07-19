@@ -15,7 +15,7 @@
   "globals": {
     "React": "readonly",
     "JSX": "readonly",
-    "_": "readonly"
+    "globalThis": false
   },
   "rules": {
     "no-unused-vars": [0, { "args": "after-used", "argsIgnorePattern": "^_" }]

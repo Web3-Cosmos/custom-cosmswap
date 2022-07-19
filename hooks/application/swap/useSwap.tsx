@@ -11,8 +11,8 @@ export type SwapStore = {
   // queryCoin2Mint?: string
   // queryAmmId?: string
 
-  // coin1?: SplToken
-  // coin2?: SplToken
+  coin1?: any
+  coin2?: any
   // coin1Amount?: Numberish // may with fee and slippage
   // coin2Amount?: Numberish // may with fee and slippage
   hasUISwapped?: boolean // if user swap coin1 and coin2, this will be true
