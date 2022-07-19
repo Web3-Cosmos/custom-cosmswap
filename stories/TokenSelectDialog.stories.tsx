@@ -19,8 +19,8 @@ export default {
   },
 } as ComponentMeta<typeof TokenSelectDialog>
 
-const Template: Story<{ open: boolean, close: () => void }> = (args) => (
-  <TokenSelectDialog {...args} />
+const Template: Story<{ open: boolean; close: () => void }> = (args) => (
+  <TokenSelectDialog tokens={[]} {...args} />
 )
 
 export const Primary = Template.bind({})
