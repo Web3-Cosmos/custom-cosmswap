@@ -28,6 +28,13 @@ export function useDeviceInfoSync() {
   }, [isMobile, isTablet, isPc])
 }
 
+export function useTestnetModeSync() {
+  const testnetMode = JSON.parse(process.env.NEXT_PUBLIC_TESTNET_MODE ?? '')
+  useIsomorphicLayoutEffect(() => {
+    useAppSettings.setState({ isTestnet: testnetMode })
+  }, [testnetMode])
+}
+
 export function useWelcomeDialog(options?: { force?: boolean }) {
   const [haveReadWelcomeDialog, setHaveReadWelcomeDialog] =
     useLocalStorageItem<boolean>('HAVE_READ_WELCOME_DIALOG')

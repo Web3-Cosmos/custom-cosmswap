@@ -5,6 +5,7 @@ import { getPlatformInfo } from '@/functions/dom/getPlatformInfo'
 export type AppSettingsStore = {
   themeMode: 'dark' | 'light'
   isBetaBubbleOn: boolean // temp for beta
+  isTestnet: boolean // testnet
 
   // detect device
   isMobile: boolean
@@ -29,6 +30,7 @@ export type AppSettingsStore = {
 export const useAppSettings = create<AppSettingsStore>(() => ({
   themeMode: 'dark',
   isBetaBubbleOn: true,
+  isTestnet: false,
   isMobile: getPlatformInfo()?.isMobile ?? false,
   isTablet: getPlatformInfo()?.isMobile ?? false,
   isPc: getPlatformInfo()?.isPc ?? false,

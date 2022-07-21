@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import {
   Button,
@@ -7,7 +7,6 @@ import {
   Row,
   Col,
   Icon,
-  Image,
   Input,
   List,
   ListFast,
@@ -18,7 +17,6 @@ import { useToggle } from '@/hooks/general/useToggle'
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
 import { TokenInfo } from '@/hooks/application/chain-pool/usePoolsListQuery'
 import { useTokenBalance } from '@/hooks/application/token/useTokenBalance'
-import { formatTokenBalance } from '@/util/conversion'
 
 export default function TokenSelectorDialog(
   props: Parameters<typeof TokenSelectorDialogContent>[0]
