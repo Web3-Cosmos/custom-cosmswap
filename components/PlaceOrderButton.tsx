@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Button } from '@/components'
+import { Button, CautionIcon } from '@/components'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { useConnectWallet } from '@/hooks/application/wallet/useConnectWallet'
 import { useTokenBalance } from '@/hooks/application/token/useTokenBalance'
@@ -10,6 +10,7 @@ import {
 } from '@/hooks/application/atoms/walletAtoms'
 import { NETWORK_FEE } from '@/util/constants'
 
+import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
 import { useRegistry } from '@/hooks/application/swap/useRegistry'
 import { useTokenSwap } from '@/hooks/application/swap/useTokenSwap'
 import {
@@ -38,6 +39,8 @@ export default function PriceOrderButton({
   const { status } = useRecoilValue(walletState)
   const { mutate: connectWallet } = useConnectWallet()
   const [slippage, setSlippage] = useRecoilState(slippageAtom)
+
+  const { themeMode } = useAppSettings()
 
   const { mutate: handleSwap, isLoading: isExecutingTransaction } =
     useTokenSwap({
@@ -97,21 +100,44 @@ export default function PriceOrderButton({
     status !== WalletStatusType.connected ||
     tokenA.amount <= 0 ||
     tokenA?.amount > tokenABalance ||
-    (pathname === '/limit-order' ? currentPrice <= rate : currentPrice >= rate)
+    (pathname === '/limit-order'
+      ? currentPrice <= rate
+      : pathname === '/stop-loss'
+      ? currentPrice >= rate
+      : false)
+
+  const shouldDisplayerCautionButton =
+    !isExecutingTransaction &&
+    !isExecutingRegistryTransaction &&
+    status === WalletStatusType.connected &&
+    tokenA?.amount > tokenABalance
 
   return (
-    <Button
-      className="px-20"
-      disabled={shouldDisableSubmissionButton}
-      onClick={
-        !isExecutingTransaction &&
-        !isExecutingRegistryTransaction &&
-        !isPriceLoading
-          ? handleButtonClick
-          : undefined
-      }
-    >
-      {pathname === '/' ? 'SWAP' : 'PLACE ORDER'}
-    </Button>
+    <div className="flex flex-col">
+      {shouldDisplayerCautionButton && (
+        <div className="w-full bg-red-700 px-4 py-2 mb-4 flex flex-row justify-center rounded-lg font-semibold text-primary">
+          <div className="mr-2">
+            <CautionIcon
+              size="lg"
+              color={themeMode === 'light' ? '#4d4040' : '#fff'}
+            />
+          </div>
+          INSUFFICIENT BALANCE
+        </div>
+      )}
+      <Button
+        className="px-20"
+        disabled={shouldDisableSubmissionButton}
+        onClick={
+          !isExecutingTransaction &&
+          !isExecutingRegistryTransaction &&
+          !isPriceLoading
+            ? handleButtonClick
+            : undefined
+        }
+      >
+        {pathname === '/' ? 'SWAP' : 'PLACE ORDER'}
+      </Button>
+    </div>
   )
 }

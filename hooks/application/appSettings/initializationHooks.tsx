@@ -9,6 +9,7 @@ import { useDevice } from '@/hooks/general/useDevice'
 import { useIsomorphicLayoutEffect } from '@/hooks/general/useIsomorphicLayoutEffect'
 import { useLocalStorageItem } from '@/hooks/general/useLocalStorage'
 import { useRecordedEffect } from '@/hooks/general/useRecordedEffect'
+import { TESTNET_MODE } from '@/util/constants'
 
 export function useThemeModeSync() {
   const themeMode = useAppSettings((s) => s.themeMode)
@@ -29,10 +30,9 @@ export function useDeviceInfoSync() {
 }
 
 export function useTestnetModeSync() {
-  const testnetMode = JSON.parse(process.env.NEXT_PUBLIC_TESTNET_MODE ?? '')
   useIsomorphicLayoutEffect(() => {
-    useAppSettings.setState({ isTestnet: testnetMode })
-  }, [testnetMode])
+    useAppSettings.setState({ isTestnet: TESTNET_MODE })
+  }, [TESTNET_MODE])
 }
 
 export function useWelcomeDialog(options?: { force?: boolean }) {

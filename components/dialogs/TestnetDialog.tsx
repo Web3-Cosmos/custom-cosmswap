@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Card, Row, Icon, ResponsiveDialogDrawer } from '@/components'
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'

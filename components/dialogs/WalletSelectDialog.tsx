@@ -76,13 +76,10 @@ function WalletSelectDialogContent({
       <Grid
         className={`px-8 mobile:px-6 gap-x-6 gap-y-3 mobile:gap-2 ${
           Object.keys(wallets).length === 1 ? 'grid-cols-1' : 'grid-cols-2'
-        } grow`}
+        } grow mt-3 mb-6`}
       >
         {getWalletOptions()}
       </Grid>
-
-      {/* divider */}
-      <div className="mobile:mx-6 border-t-[1.5px] border-stack-4 my-3" />
     </Card>
   )
 }

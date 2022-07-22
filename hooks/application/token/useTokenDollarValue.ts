@@ -6,6 +6,7 @@ import {
 } from '@/hooks/application/token/useTokenInfo'
 import { usePriceForOneToken } from '@/hooks/application/token/usePriceForOneToken'
 import { tokenDollarValueQuery } from '@/hooks/application/token/tokenDollarValueQuery'
+import { useGetMultipleIbcAssetInfo } from '@/hooks/application/token/useIbcAssetInfo'
 
 import { DEFAULT_TOKEN_BALANCE_REFETCH_INTERVAL } from '@/util/constants'
 
@@ -47,12 +48,17 @@ export const useTokenDollarValue = (tokenSymbol?: string) => {
 
 export const useTokenDollarValueQuery = (tokenSymbols?: Array<string>) => {
   const getMultipleTokenInfo = useGetMultipleTokenInfo()
+  const getMultipleIbcAssetInfo = useGetMultipleIbcAssetInfo()
 
   const { data, isLoading } = useQuery(
     `tokenDollarValue/${tokenSymbols?.join('/')}`,
     async (): Promise<Array<number> | undefined> => {
       const tokenIds = tokenSymbols?.map(
-        (tokenSymbol) => getMultipleTokenInfo([tokenSymbol])?.[0]?.id ?? ''
+        (tokenSymbol) =>
+          (
+            getMultipleTokenInfo([tokenSymbol])?.[0] ||
+            getMultipleIbcAssetInfo([tokenSymbol])?.[0]
+          )?.id ?? ''
       )
 
       if (tokenIds) {
