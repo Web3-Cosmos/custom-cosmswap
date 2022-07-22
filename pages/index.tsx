@@ -220,8 +220,10 @@ function Swap() {
             </div>
           </Row>
           <Row className="justify-between mb-1">
-            <div className="text-primary">Required BANANA/BNB change:</div>
-            <div className="text-default">31.089%</div>
+            <div className="text-primary">Swap Fee:</div>
+            <div className="text-default">
+              0.3% ({(tokenA.amount * 0.3) / 100} {tokenA.tokenSymbol})
+            </div>
           </Row>
         </Card>
 

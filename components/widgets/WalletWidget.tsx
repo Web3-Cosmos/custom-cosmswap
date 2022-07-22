@@ -1,20 +1,13 @@
 import React, { ReactNode, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
-import {
-  Button,
-  Icon,
-  Row,
-  FadeIn,
-  WalletIcon,
-  WalletConnectedIcon,
-} from '@/components'
+import { Button, Row, WalletIcon, WalletConnectedIcon } from '@/components'
 
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
-import { useNotification } from '@/hooks/application/notification/useNotification'
 import { useToggle } from '@/hooks/general/useToggle'
 
 import copyToClipboard from '@/functions/dom/copyToClipboard'
+
 import {
   walletState,
   WalletStatusType,
@@ -50,7 +43,6 @@ export default function WalletWidget() {
   const [isCopied, { delayOff, on }] = useToggle()
   const [{ key, address }, setWalletState] = useRecoilState(walletState)
 
-  // const { logSuccess, logError, logWarning, logInfo } = useNotification.getState()
   function resetWalletConnection() {
     setWalletState({
       status: WalletStatusType.idle,
@@ -64,13 +56,6 @@ export default function WalletWidget() {
   useEffect(() => {
     if (isCopied) delayOff()
   }, [delayOff, isCopied])
-
-  // useEffect(() => {
-  //   logSuccess('RPC Switch Success ', `new rpc: connected`)
-  //   logError('ERROR', 'no RPC')
-  //   logWarning('Warning', 'no RPC')
-  //   logInfo('Info', 'no RPC')
-  // }, [])
 
   return (
     <Row className="justify-end">

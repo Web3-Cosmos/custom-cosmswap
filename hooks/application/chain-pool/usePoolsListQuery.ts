@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query'
+import { POOLS_LIST_URL } from '@/util/constants'
 
 export type TokenInfo = {
   id: string
@@ -39,7 +40,7 @@ export const usePoolsListQuery = (options?: Parameters<typeof useQuery>[1]) => {
   return useQuery<PoolsListQueryResponse>(
     '@pools-list',
     async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_POOLS_LIST_URL}`)
+      const response = await fetch(POOLS_LIST_URL!)
       const tokenList = await response.json()
 
       return {

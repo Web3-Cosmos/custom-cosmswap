@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import {
   Button,
@@ -7,7 +7,6 @@ import {
   Row,
   Col,
   Icon,
-  Image,
   Input,
   List,
   ListFast,
@@ -18,7 +17,6 @@ import { useToggle } from '@/hooks/general/useToggle'
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
 import { TokenInfo } from '@/hooks/application/chain-pool/usePoolsListQuery'
 import { useTokenBalance } from '@/hooks/application/token/useTokenBalance'
-import { formatTokenBalance } from '@/util/conversion'
 
 export default function TokenSelectorDialog(
   props: Parameters<typeof TokenSelectorDialogContent>[0]
@@ -166,22 +164,29 @@ function TokenSelectorDialogContent({
             </div>
 
             <Row type="grid" className="grid-cols-4 gap-x-3 gap-y-1">
-              {[...Array(4).keys()].map((index) => {
-                return (
+              {filteredTokenList
+                .filter((filteredToken) =>
+                  ['JUNO', 'RAW', 'ATOM', 'OSMO'].includes(filteredToken.symbol)
+                )
+                .map((filteredToken) => (
                   <Row
-                    key={`row_${index}`}
-                    className="py-1 px-2 mobile:py-1.5 mobile:px-2.5 rounded ring-1 ring-inset ring-primary items-center flex-wrap clickable clickable-filter-effect"
+                    key={`popular_tokens_${filteredToken.symbol}`}
+                    className="p-2 mobile:py-1.5 mobile:px-2.5 rounded ring-1 ring-inset ring-primary items-center flex-wrap clickable clickable-filter-effect"
                     onClick={() => {
+                      onSelectToken?.(filteredToken.symbol)
                       closeAndClean()
                     }}
                   >
-                    <CoinAvatar size="lg" src="/coins/solarmy.png" />
+                    <CoinAvatar
+                      size="md"
+                      className="mr-2"
+                      src={filteredToken.logoURI}
+                    />
                     <div className="text-base sm:text-sm font-normal text-secondary">
-                      {'BNB' ?? '--'}
+                      {filteredToken.symbol ?? '--'}
                     </div>
                   </Row>
-                )
-              })}
+                ))}
             </Row>
           </div>
 

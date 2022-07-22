@@ -8,6 +8,14 @@ import {
   useTokenInfo,
 } from '@/hooks/application/token/useTokenInfo'
 import {
+  IbcAssetInfo,
+  useIbcAssetList,
+} from '@/hooks/application/token/useIbcAssetList'
+import {
+  getIbcAssetInfoFromList,
+  useIbcAssetInfo,
+} from '@/hooks/application/token/useIbcAssetInfo'
+import {
   walletState,
   WalletStatusType,
 } from '@/hooks/application/atoms/walletAtoms'
@@ -61,19 +69,31 @@ async function fetchTokenBalance({
   return 0
 }
 
+const mapIbcTokenToNative = (ibcToken?: IbcAssetInfo) => {
+  if (ibcToken?.juno_denom) {
+    return {
+      ...ibcToken,
+      native: true,
+      denom: ibcToken.juno_denom,
+    }
+  }
+  return undefined
+}
+
 export const useTokenBalance = (tokenSymbol: string) => {
   const { address, status, client } = useRecoilValue(walletState)
 
   const tokenInfo = useTokenInfo(tokenSymbol)
+  const ibcAssetInfo = useIbcAssetInfo(tokenSymbol)
 
   const { data: balance = 0, isLoading } = useQuery(
     ['tokenBalance', tokenSymbol, address],
     async ({ queryKey: [, symbol] }) => {
-      if (symbol && client && tokenInfo) {
+      if (symbol && client && (tokenInfo || ibcAssetInfo)) {
         return await fetchTokenBalance({
           client,
           address,
-          token: tokenInfo,
+          token: tokenInfo || ibcAssetInfo,
         })
       }
     },
@@ -91,6 +111,7 @@ export const useTokenBalance = (tokenSymbol: string) => {
 export const useMultipleTokenBalance = (tokenSymbols?: Array<string>) => {
   const { address, status, client } = useRecoilValue(walletState)
   const [tokenList] = useTokenList()
+  const [ibcAssetsList] = useIbcAssetList()
 
   const queryKey = useMemo(
     () => `multipleTokenBalances/${tokenSymbols?.join('+')}`,
@@ -105,7 +126,15 @@ export const useMultipleTokenBalance = (tokenSymbols?: Array<string>) => {
           fetchTokenBalance({
             client,
             address,
-            token: getTokenInfoFromTokenList(tokenSymbol, tokenList!.tokens),
+            token:
+              getTokenInfoFromTokenList(tokenSymbol, tokenList!.tokens) ||
+              mapIbcTokenToNative(
+                getIbcAssetInfoFromList(
+                  tokenSymbol,
+                  ibcAssetsList?.tokens ?? []
+                )
+              ) ||
+              {},
           })
         )
       )

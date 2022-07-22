@@ -9,11 +9,12 @@ import { QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { queryClient } from '@/services/queryClient'
 
-import { WalletSelectDialog, Notification } from '@/components'
+import { WalletSelectDialog, Notification, TestnetDialog } from '@/components'
 
 import {
   useThemeModeSync,
   useDeviceInfoSync,
+  useTestnetModeSync,
 } from '@/hooks/application/appSettings/initializationHooks'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -33,7 +34,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         {/* global components */}
         <WalletSelectDialog />
+        <TestnetDialog />
         <Notification />
+
+        {/* React Query Devtools */}
+        <ReactQueryDevtools position="bottom-right" />
       </QueryClientProvider>
     </RecoilRoot>
   )
@@ -42,6 +47,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 function ClientInitialization() {
   useThemeModeSync()
   useDeviceInfoSync()
+  useTestnetModeSync()
   return null
 }
 

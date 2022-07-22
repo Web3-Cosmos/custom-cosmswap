@@ -11,7 +11,12 @@ export default function Layout(props: { children?: ReactNode }) {
   useEffect(() => {
     document?.documentElement.classList.remove('dark', 'light')
     document?.documentElement.classList.add('dark')
-  }, [])
+
+    if (router.pathname === '/limit-order')
+      useSwap.setState({ swapMode: 'LIMIT ORDER' })
+    if (router.pathname === '/stop-loss')
+      useSwap.setState({ swapMode: 'STOP LOSS' })
+  }, [router.pathname])
 
   return (
     <Col className="w-full min-h-screen bg-stack-1 justify-start items-center py-5">

@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type EnumStr = string & {}
 export type Primitive = boolean | number | string | bigint
 export type StringNumber = string | number
@@ -8,10 +7,14 @@ export type AnyFn = (...args: any[]) => any
 export type AnyObj = { [key: string]: any }
 export type AnyArr = any[]
 
-export type MayFunction<T, Params extends any[] = []> = T | ((...params: Params) => T)
+export type MayFunction<T, Params extends any[] = []> =
+  | T
+  | ((...params: Params) => T)
 export type MayPromise<T> = T | Promise<T>
 export type MayArray<T> = T | T[]
-export type DeMayArray<T extends MayArray<any>> = T extends any[] ? T[number] : T
+export type DeMayArray<T extends MayArray<any>> = T extends any[]
+  ? T[number]
+  : T
 
 export type NotFunctionValue = Exclude<any, AnyFn>
 export type Stringish = Primitive | Nullish | { toString(): any }

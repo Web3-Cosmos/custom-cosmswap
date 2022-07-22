@@ -15,7 +15,7 @@ export const useChainInfo = () => {
   const { data, isLoading } = useQuery<ChainInfo>(
     chainInfoQueryKey,
     async () => {
-      const response = await fetch(CHAIN_INFO_URL)
+      const response = await fetch(CHAIN_INFO_URL!)
       return await response.json()
     },
     {

@@ -3,6 +3,13 @@ import { coin } from '@cosmjs/stargate'
 
 import { TokenInfo } from '@/hooks/application/chain-pool/usePoolsListQuery'
 
+import {
+  INFINITE,
+  DENOM,
+  REGISTRY_STAKE_ADDRESS,
+  WRAPPER_JUNO_SWAP_ADDRESS,
+} from '@/util/constants'
+
 type RegistryArgs = {
   swapDirection: 'tokenAtoTokenB' | 'tokenBtoTokenA'
   tokenAmount: number
@@ -89,19 +96,16 @@ export const registry = async ({
       output_token,
       input_amount: `${tokenAmount}`,
       min_output: type === 'limit-order' ? `${minToken}` : '0',
-      max_output:
-        type === 'limit-order'
-          ? '340282366920938463463374607431768211455'
-          : `${minToken}`,
+      max_output: type === 'limit-order' ? INFINITE : `${minToken}`,
       recipient_exist: false,
     },
   })
 
   const fee = tokenA.native
-    ? tokenA.denom === 'ujunox'
-      ? [coin(parseInt(`${tokenAmount}`) + parseInt('1000'), 'ujunox')]
-      : [coin(1000, 'ujunox'), coin(parseInt(`${tokenAmount}`), tokenA.denom)]
-    : [coin(1000, 'ujunox')]
+    ? tokenA.denom === DENOM
+      ? [coin(parseInt(`${tokenAmount}`) + parseInt('1000'), DENOM)]
+      : [coin(1000, DENOM), coin(parseInt(`${tokenAmount}`), tokenA.denom)]
+    : [coin(1000, DENOM)]
 
   if (!tokenA.native) {
     await client.execute(
@@ -109,7 +113,7 @@ export const registry = async ({
       tokenA.token_address,
       {
         increase_allowance: {
-          spender: `${process.env.NEXT_PUBLIC_REGISTRY_STAKE_ADDRESS}`,
+          spender: REGISTRY_STAKE_ADDRESS!,
           amount: `${tokenAmount}`,
           expires: undefined,
         },
@@ -121,10 +125,10 @@ export const registry = async ({
 
   await client.execute(
     senderAddress,
-    `${process.env.NEXT_PUBLIC_REGISTRY_STAKE_ADDRESS}`,
+    REGISTRY_STAKE_ADDRESS!,
     {
       create_request: {
-        target: `${process.env.NEXT_PUBLIC_WRAPPER_JUNO_SWAP}`,
+        target: WRAPPER_JUNO_SWAP_ADDRESS!,
         msg: wrapperSwapMsg,
         input_asset: {
           info: input_token,
@@ -138,7 +142,7 @@ export const registry = async ({
   )
 
   const requestsQuery: any = await client.queryContractSmart(
-    `${process.env.NEXT_PUBLIC_REGISTRY_STAKE_ADDRESS}`,
+    REGISTRY_STAKE_ADDRESS!,
     {
       requests: {},
     }
@@ -152,7 +156,7 @@ export const registryRequests = async ({
   senderAddress,
 }: RegistryRequestsArgs) => {
   const requestQueries: any = await client.queryContractSmart(
-    `${process.env.NEXT_PUBLIC_REGISTRY_STAKE_ADDRESS}`,
+    REGISTRY_STAKE_ADDRESS!,
     {
       requests: {},
     }
@@ -194,7 +198,7 @@ export const registryCancelRequests = async ({
 }: RegistryCancelRequestsArgs) => {
   await client.execute(
     senderAddress,
-    `${process.env.NEXT_PUBLIC_REGISTRY_STAKE_ADDRESS}`,
+    REGISTRY_STAKE_ADDRESS!,
     {
       cancel_request: {
         id,
