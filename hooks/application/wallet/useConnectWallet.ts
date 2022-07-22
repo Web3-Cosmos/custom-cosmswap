@@ -9,7 +9,7 @@ import {
   walletState,
   WalletStatusType,
 } from '@/hooks/application/atoms/walletAtoms'
-import { GAS_PRICE } from '@/util/constants'
+import { GAS_PRICE, DENOM } from '@/util/constants'
 import { useChainInfo } from '@/hooks/application/chain-pool/useChainInfo'
 import { registryRequests } from '@/services/swap'
 
@@ -42,7 +42,7 @@ export const useConnectWallet = (
         chainInfo.rpc,
         offlineSigner,
         {
-          gasPrice: GasPrice.fromString(GAS_PRICE),
+          gasPrice: GasPrice.fromString(GAS_PRICE + DENOM),
         }
       )
 

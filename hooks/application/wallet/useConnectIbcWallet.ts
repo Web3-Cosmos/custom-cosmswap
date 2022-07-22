@@ -9,7 +9,7 @@ import {
   ibcWalletState,
   WalletStatusType,
 } from '@/hooks/application/atoms/walletAtoms'
-import { GAS_PRICE } from '@/util/constants'
+import { GAS_PRICE, DENOM } from '@/util/constants'
 
 /* shares very similar logic with `useConnectWallet` and is a subject to refactor */
 export const useConnectIbcWallet = (
@@ -57,7 +57,7 @@ export const useConnectIbcWallet = (
         rpc,
         offlineSigner,
         {
-          gasPrice: GasPrice.fromString(GAS_PRICE!),
+          gasPrice: GasPrice.fromString(GAS_PRICE + DENOM),
         }
       )
 
