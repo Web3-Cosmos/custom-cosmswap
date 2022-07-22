@@ -17,7 +17,6 @@ import { useToggle } from '@/hooks/general/useToggle'
 import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
 import { TokenInfo } from '@/hooks/application/chain-pool/usePoolsListQuery'
 import { useTokenBalance } from '@/hooks/application/token/useTokenBalance'
-import { useIbcTokenBalance } from '@/hooks/application/token/useIBCTokenBalance'
 
 export default function TokenSelectorDialog(
   props: Parameters<typeof TokenSelectorDialogContent>[0]
