@@ -10,6 +10,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { queryClient } from '@/services/queryClient'
 
 import { WalletSelectDialog, Notification, TestnetDialog } from '@/components'
+import Head from 'next/head'
 
 import {
   useThemeModeSync,
@@ -23,6 +24,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
+        <Head>
+          <title>{process.env.NEXT_PUBLIC_SITE_TITLE}</title>
+          <meta name="description" content="Autonomy Cosmswap" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
         {/* initialization hooks */}
         <ClientInitialization />
         {pathname !== '/' && <ApplicationInitialization />}
