@@ -71,5 +71,11 @@ export type SpeedVector = Vector
 export type Swap = 'SWAP'
 export type LimitOrder = 'LIMIT ORDER'
 export type StopLoss = 'STOP LOSS'
+export type Transfer = 'TRANSFER'
+export type Liquidity = 'LIQUIDITY'
 
-export type SwapMode = Swap | LimitOrder | StopLoss
+export type SwapMode = Swap | LimitOrder | StopLoss | Transfer | Liquidity
+
+export type TransactionKind = 'deposit' | 'withdraw'
+export type TransactionOrigin = 'platform' | 'wallet'
+export type TransactionType = 'incoming' | 'outgoing'

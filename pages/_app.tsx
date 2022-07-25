@@ -1,5 +1,6 @@
-import '../styles/globals.css'
+import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import NextNProgress from 'nextjs-progressbar'
@@ -10,7 +11,6 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { queryClient } from '@/services/queryClient'
 
 import { WalletSelectDialog, Notification, TestnetDialog } from '@/components'
-import Head from 'next/head'
 
 import {
   useThemeModeSync,
