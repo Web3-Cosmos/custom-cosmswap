@@ -1,27 +1,16 @@
-import React, {
-  createRef,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { createRef, useEffect, useRef, useState } from 'react'
 import type { NextPage } from 'next'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
   Layout,
-  CoinAvatar,
   CoinInputBox,
   CoinInputBoxHandle,
   RateInputBox,
   Card,
   TokenSelectDialog,
   Row,
-  Button,
   ButtonHandle,
   Icon,
-  Tabs,
   PlaceOrderButton,
   TransactionsHistory,
 } from '@/components'

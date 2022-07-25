@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Fragment, RefObject, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -27,7 +28,7 @@ import {
   SwitchVerticalIcon,
   XIcon,
   TrashIcon,
-  DotsHorizontalIcon
+  DotsHorizontalIcon,
 } from '@heroicons/react/outline'
 
 import { useClick, UseClickOptions } from '@/hooks/general/useClick'
@@ -93,10 +94,13 @@ export default function Icon({
   domRef,
   className,
   /** sx: 12px; sm: 16px; md: 20px; lg: 24px; xl: 32px (default: lg) */
-  size = 'lg'
+  size = 'lg',
 }: IconProps) {
   const selfRef = useRef()
-  const styleClass = twMerge(`Icon ${inline ? 'inline-grid' : 'grid'} h-[max-content] w-[max-content]`, className)
+  const styleClass = twMerge(
+    `Icon ${inline ? 'inline-grid' : 'grid'} h-[max-content] w-[max-content]`,
+    className
+  )
   useClick(selfRef, { onClick, disable: !onClick })
   useHover(selfRef, { onHover, disable: !onHover })
 
@@ -155,7 +159,9 @@ export default function Icon({
         : heroIconName === 'dots-horizontal'
         ? DotsHorizontalIcon
         : heroIconName === ' '
-        ? ({ className }: { className?: string }) => <div className={className} />
+        ? ({ className }: { className?: string }) => (
+            <div className={className} />
+          )
         : Fragment
     return (
       <div className={twMerge(styleClass)} ref={mergeRef(selfRef, domRef)}>
