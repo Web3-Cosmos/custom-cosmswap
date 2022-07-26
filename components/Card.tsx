@@ -30,9 +30,9 @@ export default function Card({
     <div
       {...htmlProps}
       className={twMerge(
-        `Card ${
-          size === 'lg' ? 'rounded-xl' : 'rounded-lg'
-        } w-full max-w-[680px] ${className ?? ''}`
+        `Card ${size === 'lg' ? 'rounded-xl' : 'rounded-lg'} w-full ${
+          className ?? ''
+        }`
       )}
       ref={mergeRef(domRef as RefObject<HTMLDivElement>, clickRef)}
       style={style}

@@ -3,7 +3,18 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { Layout, Card, Row, Col, Button, CautionIcon } from '@/components'
+import {
+  Layout,
+  Card,
+  Row,
+  Col,
+  Button,
+  Spinner,
+  CautionIcon,
+  LiquidityHeader,
+  LiquidityBreakdown,
+  ManageLiquidityCard,
+} from '@/components'
 
 import { useRefetchQueries } from '@/hooks/application/token/useRefetchQueries'
 import {
@@ -93,7 +104,6 @@ export default function Pool() {
       },
     })
 
-  console.log(poolId)
   if (!pool || !poolId) {
     return (
       <Layout>
@@ -113,5 +123,38 @@ export default function Pool() {
   }
 
   const [tokenA, tokenB] = pool.pool_assets
-  return <></>
+  return (
+    <Layout>
+      <Card className="shadow-xl rounded-xl mobile:rounded-none border border-stack-4 bg-stack-2 px-4">
+        {/* back button & pool { token + token} */}
+        <LiquidityHeader tokenA={tokenA} tokenB={tokenB} className="my-4" />
+
+        {/* divider */}
+        <div className="mobile:mx-6 border-t-[1.5px] border-stack-4 my-2" />
+
+        {isLoadingInitial ? (
+          <div className="text-center">
+            <Spinner size="md" />
+          </div>
+        ) : (
+          <>
+            <LiquidityBreakdown
+              poolId={poolId as string}
+              tokenA={tokenA}
+              tokenB={tokenB}
+              totalLiquidity={pool.liquidity.available.total}
+              yieldPercentageReturn={
+                pool.liquidity.rewards.annualYieldPercentageReturn
+              }
+              rewardsContracts={pool.liquidity.rewards.contracts ?? []}
+            />
+
+            <div className="mobile:mx-6 border-t-[1.5px] border-stack-4 my-2" />
+
+            <ManageLiquidityCard />
+          </>
+        )}
+      </Card>
+    </Layout>
+  )
 }

@@ -78,5 +78,10 @@ export * from './dialogs/TransferDialog/AssetSelect'
 export * from './dialogs/TransferDialog/TokenSelectList'
 export * from './dialogs/TransferDialog/WalletInfo'
 
+export * from './liquidity/PoolCard'
+export * from './liquidity/LiquidityHeader'
+export * from './liquidity/LiquidityBreakdown'
+export * from './liquidity/ManageLiquidityCard'
+
 // icons
 export * from './icons'

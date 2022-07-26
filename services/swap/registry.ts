@@ -111,8 +111,8 @@ export const registry = async ({
           ),
         ]
       : [
-          coin(parseInt(process.env.NEXT_PUBLIC_FEE_PRICE!), DENOM),
           coin(parseInt(`${tokenAmount}`), tokenA.denom),
+          coin(parseInt(process.env.NEXT_PUBLIC_FEE_PRICE!), DENOM),
         ]
     : [coin(parseInt(process.env.NEXT_PUBLIC_FEE_PRICE!), DENOM)]
 
