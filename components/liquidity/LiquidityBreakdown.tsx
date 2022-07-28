@@ -200,7 +200,7 @@ export const LiquidityBreakdown = ({
           <div className="text-secondary font-bold text-xs my-2 text-center">
             APR Reward
           </div>
-          <div className="inline-flex p-0.5 rounded-3xl bg-stack-4 items-center">
+          <div className="inline-flex p-0.5 rounded-3xl bg-stack-4 justify-center items-center">
             <div className="rotate-45">
               <ArrowUpIcon
                 color={themeMode === 'light' ? '#4d4040' : '#ffffff'}

@@ -21,13 +21,15 @@ export const LiquidityHeader = ({
 }: LiquidityHeaderArgs) => {
   return (
     <Grid className={twMerge('items-center grid-cols-3', className)}>
-      <Link href="/liquidity">
-        <a className="flex flex-row justify-start">
-          <Icon heroIconName="chevron-left" />
-          Back
-        </a>
-      </Link>
-      <div className="text-primary justify-center text-lg font-semibold">
+      <div className="inline-flex">
+        <Link href="/liquidity">
+          <a className="inline-flex flex-row justify-start">
+            <Icon heroIconName="chevron-left" />
+            Back
+          </a>
+        </Link>
+      </div>
+      <div className="text-primary text-center text-lg font-semibold">
         Pool {tokenA.name} + {tokenB.name}
       </div>
       <div className="text-primary text-lg font-semibold invisible">

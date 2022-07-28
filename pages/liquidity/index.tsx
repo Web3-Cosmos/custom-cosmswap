@@ -89,7 +89,9 @@ const Liquidity: NextPage = () => {
           <>
             {Boolean(myPools.length) && (
               <>
-                <div className="text-primary text-sm">Your Liquidity Pools</div>
+                <div className="text-primary text-sm my-2">
+                  Your Liquidity Pools
+                </div>
                 <Grid className="grid-cols-3 gap-3">
                   {myPools.map(
                     ({
@@ -113,7 +115,9 @@ const Liquidity: NextPage = () => {
                   )}
                 </Grid>
                 {Boolean(allPools.length) && (
-                  <div className="text-primary text-sm">Other Pools</div>
+                  <div className="text-primary text-sm mt-8 my-2">
+                    Other Pools
+                  </div>
                 )}
               </>
             )}

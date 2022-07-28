@@ -62,7 +62,7 @@ export default function Layout(props: { children?: ReactNode }) {
         </Row>
       </Row>
 
-      <div className="mt-20">{props.children}</div>
+      <div className="mt-20 max-w-4xl">{props.children}</div>
     </Col>
   )
 }

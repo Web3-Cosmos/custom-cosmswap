@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import {
   Layout,
   Card,
   Row,
-  Col,
-  Button,
   Spinner,
   CautionIcon,
   LiquidityHeader,
   LiquidityBreakdown,
   ManageLiquidityCard,
+  ManageBondedLiquidityCard,
+  LiquidityRewardsCard,
+  UnbondingLiquidityStatusList,
+  ManagePoolDialog,
+  BondLiquidityDialog,
 } from '@/components'
 
 import { useRefetchQueries } from '@/hooks/application/token/useRefetchQueries'
@@ -28,36 +29,7 @@ import { useAppSettings } from '@/hooks/application/appSettings/useAppSettings'
 import {
   __POOL_REWARDS_ENABLED__,
   __POOL_STAKING_ENABLED__,
-  APP_NAME,
 } from '@/util/constants'
-import { formatSdkErrorMessage } from '@/util/messages'
-
-// import {
-//   BondLiquidityDialog,
-//   LiquidityBreakdown,
-//   LiquidityHeader,
-//   LiquidityRewardsCard,
-//   ManageBondedLiquidityCard,
-//   ManageLiquidityCard,
-//   ManagePoolDialog,
-//   UnbondingLiquidityStatusList,
-// } from 'features/liquidity'
-// import {
-//   Button,
-//   ChevronIcon,
-//   Divider,
-//   Error,
-//   IconWrapper,
-//   Inline,
-//   media,
-//   Spinner,
-//   styled,
-//   Text,
-//   Toast,
-//   UpRightArrow,
-//   useMedia,
-//   Valid,
-// } from 'junoblocks'
 
 export default function Pool() {
   const {
@@ -123,9 +95,30 @@ export default function Pool() {
   }
 
   const [tokenA, tokenB] = pool.pool_assets
+
   return (
     <Layout>
-      <Card className="shadow-xl rounded-xl mobile:rounded-none border border-stack-4 bg-stack-2 px-4">
+      <ManagePoolDialog
+        isShowing={isManageLiquidityDialogShowing}
+        initialActionType={actionType}
+        onRequestClose={() =>
+          setManageLiquidityDialogState({
+            isShowing: false,
+            actionType: 'add',
+          })
+        }
+        poolId={poolId as string}
+      />
+
+      {__POOL_STAKING_ENABLED__ && (
+        <BondLiquidityDialog
+          isShowing={isBondingDialogShowing}
+          onRequestClose={() => setIsBondingDialogShowing(false)}
+          poolId={poolId as string}
+        />
+      )}
+
+      <Card className="shadow-xl rounded-xl mobile:rounded-none bg-stack-1 px-4">
         {/* back button & pool { token + token} */}
         <LiquidityHeader tokenA={tokenA} tokenB={tokenB} className="my-4" />
 
@@ -151,7 +144,53 @@ export default function Pool() {
 
             <div className="mobile:mx-6 border-t-[1.5px] border-stack-4 my-2" />
 
-            <ManageLiquidityCard />
+            <Row className="py-4 gap-4">
+              <ManageLiquidityCard
+                providedLiquidityReserve={pool.liquidity.reserves.provided}
+                providedLiquidity={pool.liquidity.available.provided}
+                stakedLiquidityReserve={pool.liquidity.reserves.providedStaked}
+                providedTotalLiquidity={pool.liquidity.providedTotal}
+                stakedLiquidity={pool.liquidity.staked}
+                tokenASymbol={tokenA.symbol}
+                tokenBSymbol={tokenB.symbol}
+                supportsIncentives={supportsIncentives}
+                onClick={() =>
+                  setManageLiquidityDialogState({
+                    isShowing: true,
+                    actionType: 'add',
+                  })
+                }
+              />
+              <ManageBondedLiquidityCard
+                onClick={() => setIsBondingDialogShowing(true)}
+                providedLiquidity={pool.liquidity.available.provided}
+                stakedLiquidity={pool.liquidity.staked.provided}
+                yieldPercentageReturn={
+                  pool.liquidity.rewards.annualYieldPercentageReturn
+                }
+                supportsIncentives={supportsIncentives}
+              />
+              <LiquidityRewardsCard
+                onClick={mutateClaimRewards}
+                hasBondedLiquidity={
+                  pool.liquidity.staked.provided.tokenAmount > 0
+                }
+                hasProvidedLiquidity={
+                  pool.liquidity.available.provided.tokenAmount > 0
+                }
+                pendingRewards={pendingRewards}
+                loading={isClaimingRewards}
+                supportsIncentives={supportsIncentives}
+              />
+            </Row>
+
+            {supportsIncentives && (
+              <UnbondingLiquidityStatusList
+                poolId={poolId as string}
+                tokenA={tokenA}
+                tokenB={tokenB}
+              />
+            )}
           </>
         )}
       </Card>
