@@ -1,0 +1,44 @@
+// @ts-nocheck
+import { useMutation } from 'react-query'
+import { useRecoilValue } from 'recoil'
+
+import { usePoolFromListQueryById } from '@/hooks/application/chain-pool/usePoolsListQuery'
+import { useSwapInfo } from '@/hooks/application/swap/useSwapInfo'
+import { walletState } from '@/hooks/application/atoms/walletAtoms'
+import { stakeTokens, unstakeTokens } from '@/services/staking'
+
+type UseBondTokensArgs = {
+  poolId: string
+} & Parameters<typeof useMutation>[2]
+
+export const useBondTokens = ({ poolId, ...options }: UseBondTokensArgs) => {
+  const [pool] = usePoolFromListQueryById({ poolId })
+  const { address, client } = useRecoilValue(walletState)
+  const [swap] = useSwapInfo({ poolId })
+
+  return useMutation(async (amount: number) => {
+    return stakeTokens(
+      address,
+      pool.staking_address,
+      swap.lp_token_address,
+      amount,
+      client
+    )
+  }, options)
+}
+
+type UseUnbondTokensArgs = {
+  poolId: string
+} & Parameters<typeof useMutation>[2]
+
+export const useUnbondTokens = ({
+  poolId,
+  ...options
+}: UseUnbondTokensArgs) => {
+  const [pool] = usePoolFromListQueryById({ poolId })
+  const { address, client } = useRecoilValue(walletState)
+
+  return useMutation(async (amount: number) => {
+    return unstakeTokens(address, pool.staking_address, amount, client)
+  }, options)
+}

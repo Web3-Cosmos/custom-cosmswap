@@ -2,15 +2,7 @@ import React, { useReducer, useEffect } from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useRecoilValue } from 'recoil'
-import {
-  Layout,
-  Card,
-  AssetsList,
-  TransferDialog,
-  Col,
-  Button,
-  Row,
-} from '@/components'
+import { Layout, Card, AssetsList, TransferDialog } from '@/components'
 import { useNotification } from '@/hooks/application/notification/useNotification'
 import { useConnectIbcWallet } from '@/hooks/application/wallet/useConnectIbcWallet'
 import { useConnectWallet } from '@/hooks/application/wallet/useConnectWallet'

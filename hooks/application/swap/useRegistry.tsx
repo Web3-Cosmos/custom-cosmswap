@@ -168,7 +168,7 @@ export const useRegistryCancel = ({ id }: UseRegistryCancelArgs) => {
     useNotification.getState()
 
   return useMutation(
-    'registry',
+    'registry-cancel',
     async () => {
       if (status !== WalletStatusType.connected) {
         throw new Error('Please connect your wallet.')

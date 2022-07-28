@@ -51,7 +51,7 @@ export default function TransactionHistory({
       )
 
   const RenderTooltip: React.FC<any> = () => (
-    <Col className="w-full">
+    <Col className="w-full min-w-[400px]">
       <Row className="justify-between">
         <div className="text-sm text-primary">Placed:</div>
         <div className="text-sm text-primary font-bold">
