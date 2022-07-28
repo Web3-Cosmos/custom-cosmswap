@@ -128,7 +128,7 @@ export const UnderlyingAssetRow = ({
   )
 
   const RenderTooltip: React.FC<any> = () => (
-    <div className="text-secondary">{`≈ $${tokenAmountDollarValue} USD`}</div>
+    <div className="text-disabled font-light text-sm whitespace-nowrap">{`≈ $${tokenAmountDollarValue} USD`}</div>
   )
 
   return (
@@ -143,7 +143,7 @@ export const UnderlyingAssetRow = ({
             {formatTokenBalance(tokenAmount, { includeCommaSeparation: true })}
           </div>
           <div className="text-primary text-xs">{tokenSymbol}</div>
-          <Tooltip className="bg-stack-4" tooltip={<RenderTooltip />}>
+          <Tooltip className="bg-stack-4 max-w-sm" tooltip={<RenderTooltip />}>
             <Icon
               size="md"
               heroIconName="exclamation-circle"

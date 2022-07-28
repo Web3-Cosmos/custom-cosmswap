@@ -36,7 +36,7 @@ export default function Tooltip({
     <div className="relative inline-flex items-center" ref={ref}>
       <div
         className={twMerge(
-          'absolute -left-4 bottom-10 bg-stack-2 text-primary px-4 py-2 rounded-lg items-center transition-all duration-150 hidden min-w-[400px]',
+          'absolute -left-4 bottom-10 bg-stack-2 text-primary px-4 py-2 rounded-lg items-center transition-all duration-150 hidden',
           className
         )}
         ref={tipRef}

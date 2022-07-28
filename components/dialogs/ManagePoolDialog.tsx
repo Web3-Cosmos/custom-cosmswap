@@ -135,27 +135,29 @@ export const ManagePoolDialogContent = ({
         />
       </Row>
 
-      <Row className="gap-2">
-        <Button
-          type="text"
-          size="sm"
-          onClick={() => setAddingLiquidity(true)}
-          className={isAddingLiquidity ? 'text-default' : 'text-primary'}
-        >
-          Add
-        </Button>
-        <Button
-          type="text"
-          size="sm"
-          onClick={() => setAddingLiquidity(false)}
-          className={!isAddingLiquidity ? 'text-default' : 'text-primary'}
-        >
-          Remove
-        </Button>
-      </Row>
-      <div className="mobile:mx-6 border-t-[1.5px] border-stack-4 mt-0 mb-8" />
+      {canManageLiquidity && (
+        <Row className="gap-2">
+          <Button
+            type="text"
+            size="sm"
+            onClick={() => setAddingLiquidity(true)}
+            className={isAddingLiquidity ? 'text-default' : 'text-primary'}
+          >
+            Add
+          </Button>
+          <Button
+            type="text"
+            size="sm"
+            onClick={() => setAddingLiquidity(false)}
+            className={!isAddingLiquidity ? 'text-default' : 'text-primary'}
+          >
+            Remove
+          </Button>
+        </Row>
+      )}
+      <div className="mobile:mx-6 border-t-[1.5px] border-stack-4 mt-0 mb-4" />
 
-      <div className="text-md text-primary font-medium mb-4">
+      <div className="text-md text-primary font-medium mb-2">
         Choose how much to {isAddingLiquidity ? 'add' : 'remove'}
       </div>
       {isAddingLiquidity ? (
@@ -292,7 +294,7 @@ function RemoveLiquidityContent({
   }
 
   return (
-    <Col className="gap-2">
+    <Col className="gap-1">
       <LiquidityInputSelect
         inputRef={percentageInputRef}
         maxLiquidity={availableLiquidityDollarValue}
@@ -332,7 +334,7 @@ function RemoveLiquidityContent({
           </Button>
         ))}
       </Row>
-      <div className="mobile:mx-6 border-t-[1.5px] border-stack-4 mb-8"></div>
+      <div className="mobile:mx-6 border-t-[1.5px] border-stack-4 mb-2"></div>
       <Col>
         <div className="text-md text-primary font-medium mb-4">Removing</div>
         <Row className="gap-2 items-center">

@@ -95,7 +95,9 @@ export const LiquidityBreakdown = ({
     : `1 ${tokenA.symbol} = ${tokenPrice} ${tokenB.symbol}`
 
   const RenderTooltip: React.FC<any> = ({ text }) => (
-    <div className="text-secondary">{text}</div>
+    <div className="text-disabled font-light text-sm whitespace-nowrap">
+      {text}
+    </div>
   )
 
   return (

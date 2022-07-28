@@ -7,11 +7,8 @@ import {
   UnderlyingAssetRow,
   Row,
   Col,
-  UnionIcon,
   Icon,
 } from '@/components'
-
-import { useSubscribeInteractions } from '@/hooks/general/useSubscribeInteractions'
 
 import { dollarValueFormatterWithDecimals } from '@/util/conversion'
 
@@ -113,15 +110,7 @@ export const LiquidityRewardsCard = ({
           )
         )}
       </Col>
-      <Button
-        onClick={(e) => {
-          e.stopPropagation()
-          onClick()
-        }}
-        type="solid"
-        size="sm"
-        className="mt-8"
-      >
+      <Button onClick={onClick} type="solid" size="sm" className="mt-8">
         {loading ? 'Pending...' : 'Claim Your Rewards'}
       </Button>
     </Card>
