@@ -1,6 +1,6 @@
-## Autonomy Cosmswap
+## Cosmswap
 
-An open-source interface for a Autonomy CosmWasm decentralized exchange.
+An open-source interface for a CosmWasm decentralized exchange.
 
 Run the app in dev mode locally.
 
@@ -70,10 +70,10 @@ NEXT_PUBLIC_IBC_ASSETS_URL=/ibc_assets.json
 
 ### App name
 
-By default, the app uses the `Autonomy Cosmswap` name. To update the app name, go to the `.env` file and change the following variable:
+By default, the app uses the `Cosmswap` name. To update the app name, go to the `.env` file and change the following variable:
 
 ```
-NEXT_PUBLIC_SITE_TITLE=Autonomy Cosmswap
+NEXT_PUBLIC_SITE_TITLE=Cosmswap
 ```
 
 That will change the site title and update the footer.
@@ -97,10 +97,6 @@ NEXT_PUBLIC_APP_VERSION=1.2.7
 ### Branding
 
 We rcommend vector graphics for your project's logo and name. Go to `/logo` and swap `logo-only-icon.svg` with yours to update the app logo while keeping the file name.
-
-## How to deploy
-
-The app is currently deployed on Vercel and available [Autonomy Cosmswap](https://autonomy-cosmswap.vercel.app).
 
 ## License
 
